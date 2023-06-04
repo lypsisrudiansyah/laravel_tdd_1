@@ -20,3 +20,4 @@ use Illuminate\Support\Facades\Route;
 }); */
 
 Route::get('todo-list', [TodoListController::class, 'index']);
+Route::get('todo-list/{todoList}', [TodoListController::class, 'detail']);

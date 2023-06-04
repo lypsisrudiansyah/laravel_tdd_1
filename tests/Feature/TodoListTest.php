@@ -16,16 +16,25 @@ class TodoListTest extends TestCase
      *
      * @return void
      */
-    public function test_example()
+    public function test_fetch_index_todo_list()
     {
-        /* $response = $this->get('/');
+        // TodoList::create(['name' => 'My Todo List', 'user_id' => 1]);
+        TodoList::factory()->create();
 
-        $response->assertStatus(200); */
-        TodoList::create(['name' => 'My Todo List', 'user_id' => 1]);
-        
         $response = $this->getJson('api/todo-list');
-
         dd($response->getContent());
+
         $this->assertEquals(1, count($response->json()));
+    }
+
+    public function test_fetch_detail_todo_list()
+    {
+        $todoList = TodoList::factory()->create();
+        
+        $response = $this->getJson("api/todo-list/{$todoList->id}");
+        dd($response->getContent());
+
+        $response->assertStatus(200);
+        // $this->assertEquals(1, count($response->json()));
     }
 }

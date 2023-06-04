@@ -11,7 +11,11 @@ class TodoListController extends Controller
     {
         $datas = TodoList::all();
 
-        // return response()->json($datas);
-        return response($datas);
+        return response()->json($datas);
+    }
+
+    public function detail(TodoList $todoList)
+    {
+        return response()->json($todoList);
     }
 }
