@@ -16,6 +16,7 @@ class TodoListController extends Controller
 
     public function detail(TodoList $todoList)
     {
-        return response()->json($todoList);
+        return response($todoList);
+        // return response()->json($todoList);
     }
 }

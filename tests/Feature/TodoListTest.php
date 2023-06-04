@@ -9,20 +9,21 @@ use Tests\TestCase;
 
 class TodoListTest extends TestCase
 {
-    use RefreshDatabase ;
-    
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
+    use RefreshDatabase;
+
+    private $list;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->list = TodoList::factory()->create();
+    }
+
+
     public function test_fetch_index_todo_list()
     {
-        // TodoList::create(['name' => 'My Todo List', 'user_id' => 1]);
-        TodoList::factory()->create();
-
         $response = $this->getJson('api/todo-list');
-        dd($response->getContent());
 
         $this->assertEquals(1, count($response->json()));
     }
@@ -30,11 +31,11 @@ class TodoListTest extends TestCase
     public function test_fetch_detail_todo_list()
     {
         $todoList = TodoList::factory()->create();
-        
-        $response = $this->getJson("api/todo-list/{$todoList->id}");
-        dd($response->getContent());
 
-        $response->assertStatus(200);
-        // $this->assertEquals(1, count($response->json()));
+        $response = $this->getJson("api/todo-list/{$todoList->id}")
+            ->assertOk()
+            ->json();
+
+        $this->assertEquals($response['name'], $todoList->name);
     }
 }
