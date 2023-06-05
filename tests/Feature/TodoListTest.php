@@ -23,7 +23,8 @@ class TodoListTest extends TestCase
 
     public function test_fetch_index_todo_list()
     {
-        $response = $this->getJson('api/todo-list');
+        $response = $this->getJson('api/todo-list')
+                    ->assertOk();
 
         $this->assertEquals(1, count($response->json()));
     }
@@ -37,5 +38,17 @@ class TodoListTest extends TestCase
             ->json();
 
         $this->assertEquals($response['name'], $todoList->name);
+    }
+
+    public function test_create__todo_list()
+    {
+        $dataInput = ['name' => 'New Todo List', 'user_id' => 1];
+        $response = $this->postJson("api/todo-list", $dataInput)
+            ->assertCreated()
+            ->json();
+        
+            // create assert databaseHas
+            $this->assertDatabaseHas('todo_lists', ['name' => 'New Todo List', 'user_id' => 1]);
+        $this->assertDatabase
     }
 }
