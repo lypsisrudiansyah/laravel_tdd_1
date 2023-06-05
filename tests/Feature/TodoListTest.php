@@ -21,15 +21,15 @@ class TodoListTest extends TestCase
     }
 
 
-    public function test_fetch_index_todo_list()
+    public function testFetchIndexTodoList()
     {
         $response = $this->getJson('api/todo-list')
-                    ->assertOk();
+            ->assertOk();
 
         $this->assertEquals(1, count($response->json()));
     }
 
-    public function test_fetch_detail_todo_list()
+    public function testFetchDetailTodoList()
     {
         $todoList = TodoList::factory()->create();
 
@@ -40,15 +40,28 @@ class TodoListTest extends TestCase
         $this->assertEquals($response['name'], $todoList->name);
     }
 
-    public function test_create__todo_list()
+    public function testStoredTodoList()
     {
-        $dataInput = ['name' => 'New Todo List', 'user_id' => 1];
+        // & From Hardcoded
+        // $dataInput = ['name' => 'New Todo List', 'user_id' => 1];
+        // & From Factory
+        $dataInput = TodoList::factory()->make()->toArray();
         $response = $this->postJson("api/todo-list", $dataInput)
-            ->assertCreated()
-            ->json();
-        
-            // create assert databaseHas
-            $this->assertDatabaseHas('todo_lists', ['name' => 'New Todo List', 'user_id' => 1]);
-        $this->assertDatabase
+            ->assertCreated();
+
+        // create assert databaseHas
+        $this->assertDatabaseHas('todo_lists', $dataInput);
+        $response->assertJson($dataInput);
     }
+
+    public function testWhileStoringTodoListNameIsRequired()
+    {
+        $this->withoutExceptionHandling();
+        $dataInput = ['name' => ''];
+        $response = $this->postJson("api/todo-list", $dataInput)
+        ->assertUnprocessable()
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['name']);
+    }
+    
 }
