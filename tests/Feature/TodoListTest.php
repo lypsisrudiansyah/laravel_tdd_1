@@ -56,9 +56,9 @@ class TodoListTest extends TestCase
 
     public function testWhileStoringTodoListNameIsRequired()
     {
-        $this->withoutExceptionHandling();
-        $dataInput = ['name' => ''];
-        $response = $this->postJson("api/todo-list", $dataInput)
+        $dataInput = ['name' => '', 'user_id' => 1];
+
+        $this->postJson("api/todo-list", $dataInput)
         ->assertUnprocessable()
             ->assertStatus(422)
             ->assertJsonValidationErrors(['name']);
