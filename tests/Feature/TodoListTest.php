@@ -67,10 +67,10 @@ class TodoListTest extends TestCase
 
     public function testDeleteTodoList()
     {
-        $response = $this->deleteJson("api/todo-list/{$this->list->id}")
-            ->assertOk();
+        $this->deleteJson("api/todo-list/{$this->list->id}")
+            ->assertNoContent();
 
-        $response->assertDeleted($this->list);
+        $this->assertDatabaseMissing('todo_lists', ['id' => $this->list->id]);
     }
     
 }

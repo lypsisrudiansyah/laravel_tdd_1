@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TodoList;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TodoListController extends Controller
 {
@@ -29,5 +30,17 @@ class TodoListController extends Controller
         return TodoList::create($request->all());
         
         // return response()->json($todoList);
+    }
+
+    public function destroy(TodoList $todoList)
+    {
+        $todoList->delete();
+
+        // create import depedency for Response::HTTP_NO_CONTENT
+
+        return response()->json("Deleted")->setStatusCode(Response::HTTP_NO_CONTENT);
+        // create return response json with status code 204
+
+        
     }
 }
