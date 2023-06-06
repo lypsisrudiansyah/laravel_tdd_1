@@ -56,12 +56,21 @@ class TodoListTest extends TestCase
 
     public function testWhileStoringTodoListNameIsRequired()
     {
+        // ? why its not working while using $this->withoutExceptionHandling();
         $dataInput = ['name' => '', 'user_id' => 1];
 
         $this->postJson("api/todo-list", $dataInput)
         ->assertUnprocessable()
             ->assertStatus(422)
             ->assertJsonValidationErrors(['name']);
+    }
+
+    public function testDeleteTodoList()
+    {
+        $response = $this->deleteJson("api/todo-list/{$this->list->id}")
+            ->assertOk();
+
+        $response->assertDeleted($this->list);
     }
     
 }
