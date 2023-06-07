@@ -77,7 +77,7 @@ class TodoListTest extends TestCase
     {
         $dataInput = ['name' => 'Updated Todo List', 'user_id' => 1];
 
-        $this->putJson("api/todo-list/{$this->list->id}", $dataInput)
+        $this->patchJson("api/todo-list/{$this->list->id}", $dataInput)
             ->assertOk();
 
         $this->assertDatabaseHas('todo_lists', $dataInput);
