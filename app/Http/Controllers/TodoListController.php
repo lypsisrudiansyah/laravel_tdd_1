@@ -15,7 +15,7 @@ class TodoListController extends Controller
         return response()->json($datas);
     }
 
-    public function detail(TodoList $todoList)
+    public function show(TodoList $todoList)
     {
         return response($todoList);
         // return response()->json($todoList);
@@ -24,7 +24,8 @@ class TodoListController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
+            'user_id' => 'required',
         ]);
         
         return TodoList::create($request->all());
@@ -44,6 +45,10 @@ class TodoListController extends Controller
     // create function update
     public function update(Request $request, TodoList $todoList)
     {
+        $request->validate([
+            'name' => 'required',
+            'user_id' => 'required',
+        ]);
         $todoList->update($request->all());
         // create response json with statusCode for update method
         return response()->json($todoList)->setStatusCode(Response::HTTP_OK);

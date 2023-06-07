@@ -54,15 +54,14 @@ class TodoListTest extends TestCase
         $response->assertJson($dataInput);
     }
 
-    public function testWhileStoringTodoListNameIsRequired()
+    public function testWhileStoringTodoListNameAndUserIdIsRequired()
     {
         // ? why its not working while using $this->withoutExceptionHandling();
-        $dataInput = ['name' => '', 'user_id' => 1];
+        $dataInput = ['name' => '', 'user_id' => null];
 
         $this->postJson("api/todo-list", $dataInput)
         ->assertUnprocessable()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['name']);
+            ->assertJsonValidationErrors(['name', 'user_id']);
     }
 
     public function testDeleteTodoList()
@@ -81,6 +80,16 @@ class TodoListTest extends TestCase
             ->assertOk();
 
         $this->assertDatabaseHas('todo_lists', $dataInput);
+    }
+
+    public function testWhileUpdateTodoListNameIsRequired()
+    {
+        $dataInput = ['name' => '', 'user_id' => null];
+
+        $this->patchJson("api/todo-list/{$this->list->id}", $dataInput)
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['name']);
+
     }
     
 }

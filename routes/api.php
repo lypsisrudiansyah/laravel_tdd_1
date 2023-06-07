@@ -19,8 +19,11 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 }); */
 
-Route::get('todo-list', [TodoListController::class, 'index']);
+Route::apiResource('todo-list', TodoListController::class);
+
+/* Route::get('todo-list', [TodoListController::class, 'index']);
 Route::post('todo-list', [TodoListController::class, 'store']);
 Route::patch('todo-list/{todoList}', [TodoListController::class, 'update']);
-Route::get('todo-list/{todoList}', [TodoListController::class, 'detail']);
+Route::get('todo-list/{todoList}', [TodoListController::class, 'show']);
 Route::delete('todo-list/{todoList}', [TodoListController::class, 'destroy']);
+ */
