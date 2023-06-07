@@ -39,8 +39,13 @@ class TodoListController extends Controller
         // create import depedency for Response::HTTP_NO_CONTENT
 
         return response()->json("Deleted")->setStatusCode(Response::HTTP_NO_CONTENT);
-        // create return response json with status code 204
+    }
 
-        
+    // create function update
+    public function update(Request $request, TodoList $todoList)
+    {
+        $todoList->update($request->all());
+        // create response json with statusCode for update method
+        return response()->json($todoList)->setStatusCode(Response::HTTP_OK);
     }
 }
