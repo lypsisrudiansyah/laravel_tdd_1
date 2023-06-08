@@ -19,8 +19,10 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 }); */
 
+// * Manually define routing bundling on apiResource
 Route::apiResource('todo-list', TodoListController::class);
 
+// * Manually define each routing
 /* Route::get('todo-list', [TodoListController::class, 'index']);
 Route::post('todo-list', [TodoListController::class, 'store']);
 Route::patch('todo-list/{todoList}', [TodoListController::class, 'update']);

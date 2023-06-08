@@ -17,9 +17,10 @@ class TodoListTest extends TestCase
     {
         parent::setUp();
 
-        $this->list = TodoList::factory()->create();
+        // $data = ['name' => 'Todo List', 'user_id' => 1];
+        // $this->list = $this->createTodoList($data);
+        $this->list = $this->createTodoList([]);
     }
-
 
     public function testFetchIndexTodoList()
     {
@@ -29,15 +30,20 @@ class TodoListTest extends TestCase
         $this->assertEquals(1, count($response->json()));
     }
 
-    public function testFetchDetailTodoList()
+    public function testFetchSingleTodoList()
     {
-        $todoList = TodoList::factory()->create();
-
-        $response = $this->getJson("api/todo-list/{$todoList->id}")
+        $response = $this->getJson("api/todo-list/{$this->list->id}")
             ->assertOk()
             ->json();
 
-        $this->assertEquals($response['name'], $todoList->name);
+        $this->assertEquals($response['name'], $this->list->name);
+    }
+
+    // create test fetchSingleTodoListNotFound
+    public function testFetchSingleTodoListNotFound()
+    {
+        $response = $this->getJson("api/todo-list/999")
+            ->assertNotFound();
     }
 
     public function testStoredTodoList()
@@ -91,5 +97,11 @@ class TodoListTest extends TestCase
             ->assertJsonValidationErrors(['name']);
 
     }
+
+    public function createTodoList(array $args)
+    {
+        return TodoList::factory()->create($args ?? null);
+    }
     
+    // create
 }

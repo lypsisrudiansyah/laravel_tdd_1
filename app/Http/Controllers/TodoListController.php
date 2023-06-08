@@ -15,10 +15,10 @@ class TodoListController extends Controller
         return response()->json($datas);
     }
 
-    public function show(TodoList $todoList)
+    public function show(TodoList $todo_list)
     {
-        return response($todoList);
-        // return response()->json($todoList);
+        return response($todo_list);
+        // return response()->json($todo_list);
     }
 
     public function store(Request $request)
@@ -30,12 +30,12 @@ class TodoListController extends Controller
         
         return TodoList::create($request->all());
         
-        // return response()->json($todoList);
+        // return response()->json($todo_list);
     }
 
-    public function destroy(TodoList $todoList)
+    public function destroy(TodoList $todo_list)
     {
-        $todoList->delete();
+        $todo_list->delete();
 
         // create import depedency for Response::HTTP_NO_CONTENT
 
@@ -43,14 +43,13 @@ class TodoListController extends Controller
     }
 
     // create function update
-    public function update(Request $request, TodoList $todoList)
+    public function update(Request $request, TodoList $todo_list)
     {
         $request->validate([
             'name' => 'required',
             'user_id' => 'required',
         ]);
-        $todoList->update($request->all());
-        // create response json with statusCode for update method
-        return response()->json($todoList)->setStatusCode(Response::HTTP_OK);
+        $todo_list->update($request->all());
+        return response()->json($todo_list)->setStatusCode(Response::HTTP_OK);
     }
 }
