@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TodoListController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,8 @@ use Illuminate\Support\Facades\Route;
 
 // * Manually define routing bundling on apiResource
 Route::apiResource('todo-list', TodoListController::class);
+
+Route::get('task', [TaskController::class, 'index']);
 
 // * Manually define each routing
 /* Route::get('todo-list', [TodoListController::class, 'index']);
