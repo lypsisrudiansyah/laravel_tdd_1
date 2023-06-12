@@ -28,11 +28,35 @@ class TaskTest extends TestCase
         ]);
     }
 
-    // testStoreTask
     public function testStoreTaskForATodoList()
     {
         $dataInput = Task::factory()->make()->toArray();
         $response = $this->postJson("api/task", $dataInput)
             ->assertCreated();
     }
+
+    public function testUpdateTaskForATodoList()
+    {
+        $task = Task::factory()->create();
+        $dataInput = Task::factory()->make()->toArray();
+        $response = $this->putJson("api/task/{$task->id}", $dataInput)
+            ->assertOk();
+    }
+
+    public function testFetchSingleTask()
+    {
+        $task = Task::factory()->create();
+        $response = $this->getJson("api/task/{$task->id}")
+            ->assertOk()
+            ->json();
+
+        $this->assertEquals($response['title'], $task->title);
+    }
+
+    public function testFetchSingleTaskNotFound()
+    {
+        $response = $this->getJson("api/task/999")
+            ->assertNotFound();
+    }
+
 }
