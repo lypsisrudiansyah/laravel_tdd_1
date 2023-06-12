@@ -31,7 +31,7 @@ class TaskTest extends TestCase
         ]);
     }
 
-    public function testStoreTaskForATodoList()
+    public function testStoreTaskOfATodoList()
     {
         $dataInput = Task::factory()->make()->toArray();
         $response = $this->postJson("api/task", $dataInput)
@@ -40,7 +40,15 @@ class TaskTest extends TestCase
         $this->assertDatabaseHas('tasks', $dataInput);
     }
 
-    public function testUpdateTaskForATodoList()
+    public function testStoreTaskOfATodoListWhileFieldRequiredFilledByEmptyValue()
+    {
+        $dataInput = Task::factory()->make(['title' => '', 'description' => 'New Description', 'status' => ''])->toArray();
+        $response = $this->postJson("api/task", $dataInput)
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['title', 'status']);
+    }
+
+    public function testUpdateTaskOfATodoList()
     {
         // hardcode dataInput
         $dataInput = ['title' => 'New Title', 'description' => 'New Description', 'status' => 'New Status'];
@@ -48,6 +56,14 @@ class TaskTest extends TestCase
             ->assertOk();
 
         $this->assertDatabaseHas('tasks', $dataInput);
+    }
+
+    public function testUpdateTaskOfATodoListWhileFieldRequiredFilledByEmptyValue()
+    {
+        $dataInput = ['title' => '', 'description' => 'New Description', 'status' => ''];
+        $response = $this->putJson("api/task/{$this->task->id}", $dataInput)
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['title', 'status']);
     }
 
     public function testFetchSingleTask()
@@ -71,6 +87,6 @@ class TaskTest extends TestCase
     {
         $task = Task::factory()->create();
         $response = $this->deleteJson("api/task/{$task->id}")
-            ->assertOk();
+            ->assertNoContent();
     }
 }
