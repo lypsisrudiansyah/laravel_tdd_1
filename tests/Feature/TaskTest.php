@@ -20,9 +20,11 @@ class TaskTest extends TestCase
         Task::factory()->create();
 
         $response = $this->getJson('api/task')
-        ->assertOk()
-        ->json();
+        ->assertOk();
 
-        // $this->assertEquals(1, count($response));
+        $this->assertEquals(1, count($response->json()));
+        $response->assertJsonStructure([
+            '*' => ['id', 'title', 'description', 'status']
+        ]);
     }
 }

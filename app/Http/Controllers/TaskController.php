@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
     public function index()
     {
-        return response()->json()->setStatusCode(200);
+        $tasks = Task::all();
+        // dd($tasks);
+        return response()->json($tasks)->setStatusCode(200);
     }
 }

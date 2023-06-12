@@ -26,7 +26,10 @@ class TodoListTest extends TestCase
     {
         $response = $this->getJson('api/todo-list')
             ->assertOk();
-
+            
+        $response->assertJsonStructure([
+            '*' => ['id', 'name', 'user_id']
+        ]);
         $this->assertEquals(1, count($response->json()));
     }
 
@@ -66,7 +69,7 @@ class TodoListTest extends TestCase
         $dataInput = ['name' => '', 'user_id' => null];
 
         $this->postJson("api/todo-list", $dataInput)
-        ->assertUnprocessable()
+            ->assertUnprocessable()
             ->assertJsonValidationErrors(['name', 'user_id']);
     }
 
@@ -95,13 +98,12 @@ class TodoListTest extends TestCase
         $this->patchJson("api/todo-list/{$this->list->id}", $dataInput)
             ->assertUnprocessable()
             ->assertJsonValidationErrors(['name']);
-
     }
 
     public function createTodoList(array $args)
     {
         return TodoList::factory()->create($args ?? null);
     }
-    
+
     // create
 }
