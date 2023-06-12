@@ -27,4 +27,12 @@ class TaskTest extends TestCase
             '*' => ['id', 'title', 'description', 'status']
         ]);
     }
+
+    // testStoreTask
+    public function testStoreTaskForATodoList()
+    {
+        $dataInput = Task::factory()->make()->toArray();
+        $response = $this->postJson("api/task", $dataInput)
+            ->assertCreated();
+    }
 }
