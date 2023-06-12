@@ -13,4 +13,9 @@ class Task extends Model
     public const PENDING = 'pending';
     public const NOT_STARTED = 'not_started';
 
+    protected $fillable = [
+        'title',
+        'description',
+        'status',
+    ];
 }

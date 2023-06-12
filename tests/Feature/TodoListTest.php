@@ -17,8 +17,10 @@ class TodoListTest extends TestCase
     {
         parent::setUp();
 
+        // & From Hardcoded
         // $data = ['name' => 'Todo List', 'user_id' => 1];
         // $this->list = $this->createTodoList($data);
+
         $this->list = $this->createTodoList([]);
     }
 

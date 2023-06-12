@@ -10,17 +10,20 @@ use Tests\TestCase;
 class TaskTest extends TestCase
 {
     use RefreshDatabase;
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
+    private $task;
+
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->task = $this->createTask([]);
+    }
+
     public function testFetchTasksOfATodoList()
     {
-        Task::factory()->create();
-
         $response = $this->getJson('api/task')
-        ->assertOk();
+            ->assertOk();
 
         $this->assertEquals(1, count($response->json()));
         $response->assertJsonStructure([
@@ -33,14 +36,18 @@ class TaskTest extends TestCase
         $dataInput = Task::factory()->make()->toArray();
         $response = $this->postJson("api/task", $dataInput)
             ->assertCreated();
+
+        $this->assertDatabaseHas('tasks', $dataInput);
     }
 
     public function testUpdateTaskForATodoList()
     {
-        $task = Task::factory()->create();
-        $dataInput = Task::factory()->make()->toArray();
-        $response = $this->putJson("api/task/{$task->id}", $dataInput)
+        // hardcode dataInput
+        $dataInput = ['title' => 'New Title', 'description' => 'New Description', 'status' => 'New Status'];
+        $response = $this->putJson("api/task/{$this->task->id}", $dataInput)
             ->assertOk();
+
+        $this->assertDatabaseHas('tasks', $dataInput);
     }
 
     public function testFetchSingleTask()
@@ -59,4 +66,11 @@ class TaskTest extends TestCase
             ->assertNotFound();
     }
 
+    // testDeleteTask
+    public function testDeleteTask()
+    {
+        $task = Task::factory()->create();
+        $response = $this->deleteJson("api/task/{$task->id}")
+            ->assertOk();
+    }
 }
