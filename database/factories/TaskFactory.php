@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Task;
+use App\Models\TodoList;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -15,9 +16,12 @@ class TaskFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(array $attributes = [])
     {
+        $todoListId = $attributes['todo_list_id'] ?? TodoList::factory()->create()->id;
+        // dd($attributes);
         return [
+            'todo_list_id' => $todoListId,
             'title' => fake()->name(),
             'description' => fake()->sentence(3),
             'status' => Task::STARTED,

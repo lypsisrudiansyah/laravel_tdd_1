@@ -54,7 +54,7 @@ class TaskTest extends TestCase
 
     public function testUpdateTaskOfATodoList()
     {
-        $this->withoutExceptionHandling();
+        // $this->withoutExceptionHandling();
         // hardcode dataInput
         $dataInput = ['title' => 'New Title', 'description' => 'New Description', 'status' => 'New Status'];
         $response = $this->putJson("api/task/{$this->task->id}", $dataInput)
