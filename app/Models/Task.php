@@ -14,6 +14,7 @@ class Task extends Model
     public const NOT_STARTED = 'not_started';
 
     protected $fillable = [
+        'todo_list_id',
         'title',
         'description',
         'status',
