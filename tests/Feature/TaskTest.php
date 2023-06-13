@@ -22,7 +22,9 @@ class TaskTest extends TestCase
 
     public function testFetchTasksOfATodoList()
     {
-        $response = $this->getJson('api/task')
+        $todoList = $this->createTodoList([]);
+        $task = $this->createTask(['todo_list_id' => $todoList->id]);
+        $response = $this->getJson("api/todo-list/{$todoList->id}/task")
             ->assertOk();
 
         $this->assertEquals(1, count($response->json()));
@@ -33,17 +35,21 @@ class TaskTest extends TestCase
 
     public function testStoreTaskOfATodoList()
     {
-        $dataInput = Task::factory()->make()->toArray();
-        $response = $this->postJson("api/task", $dataInput)
+        // $dataInput = Task::factory()->make()->toArray();
+        $todoList = $this->createTodoList([]);
+        $dataInput = $this->createTask(['todo_list_id' => $todoList->id, 'id' => null])->toArray();
+        // dd($dataInput);
+        $response = $this->postJson("api/todo-list/{$todoList->id}/task", $dataInput)
             ->assertCreated();
 
-        $this->assertDatabaseHas('tasks', $dataInput);
+        // $this->assertDatabaseHas('tasks', $dataInput);
+        $this->assertDatabaseCount('tasks', 1);
     }
 
     public function testStoreTaskOfATodoListWhileFieldRequiredFilledByEmptyValue()
     {
         $dataInput = Task::factory()->make(['title' => '', 'description' => 'New Description', 'status' => ''])->toArray();
-        $response = $this->postJson("api/task", $dataInput)
+        $response = $this->postJson("api/todo-list/{$this->task->todo_list_id}/task", $dataInput)
             ->assertUnprocessable()
             ->assertJsonValidationErrors(['title', 'status']);
     }

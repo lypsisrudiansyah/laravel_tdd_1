@@ -23,7 +23,10 @@ use Illuminate\Support\Facades\Route;
 // * Manually define routing bundling on apiResource
 Route::apiResource('todo-list', TodoListController::class);
 
-Route::apiResource('task', TaskController::class);
+Route::get('task/{task}', [TaskController::class, 'show'])->name('task.show');
+Route::apiResource('todo-list.task', TaskController::class)->except('show');
+// Route::apiResource('todo-list/{todo_list}/task', TaskController::class)->except('show')->shallow();
+// Route::apiResource('/task', TaskController::class);
 // Route::get('task', [TaskController::class, 'index']);
 
 // * Manually define each routing
