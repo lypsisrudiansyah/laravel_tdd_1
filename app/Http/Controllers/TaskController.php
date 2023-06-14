@@ -20,8 +20,8 @@ class TaskController extends Controller
     public function store(TaskRequest $request, TodoList $todoList)
     {
         $data = $request->all();
-        $data['todo_list_id'] = $todoList->id;
-        // dd($data);
+        $todoList->tasks()->create($data);
+        // $data['todo_list_id'] = $todoList->id;
         $task = Task::create($data);
         return response()->json($task)->setStatusCode(201);
     }
