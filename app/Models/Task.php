@@ -20,7 +20,6 @@ class Task extends Model
         'status',
     ];
 
-    // function belongsTo TodoList
     public function todoList()
     {
         return $this->belongsTo(TodoList::class);
