@@ -27,7 +27,7 @@ class TaskController extends Controller
         return response()->json($task)->setStatusCode(201);
     }
 
-    public function update(TaskRequest $request, Task $task)
+    public function update(Request $request, Task $task)
     {
         $data = $request->all();
         $task->update($data);
