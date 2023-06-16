@@ -12,6 +12,7 @@ class Task extends Model
     public const STARTED = 'started';
     public const PENDING = 'pending';
     public const NOT_STARTED = 'not_started';
+    public const DONE = 'done';
 
     protected $fillable = [
         'todo_list_id',
