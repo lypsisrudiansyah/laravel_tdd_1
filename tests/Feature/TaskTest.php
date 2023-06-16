@@ -63,13 +63,14 @@ class TaskTest extends TestCase
         $this->assertDatabaseHas('tasks', $dataInput);
     }
 
-    public function testUpdateTaskOfATodoListWhileFieldRequiredFilledByEmptyValue()
+    // & Now Rules Update is allow Nullable Request
+    /* public function testUpdateTaskOfATodoListWhileFieldRequiredFilledByEmptyValue()
     {
         $dataInput = ['title' => '', 'description' => 'New Description', 'status' => ''];
         $response = $this->putJson("api/task/{$this->task->id}", $dataInput)
             ->assertUnprocessable()
             ->assertJsonValidationErrors(['title', 'status']);
-    }
+    } */
 
     public function testFetchSingleTask()
     {
