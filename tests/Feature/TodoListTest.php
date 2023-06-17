@@ -102,10 +102,19 @@ class TodoListTest extends TestCase
             ->assertJsonValidationErrors(['name']);
     }
 
-    public function createTodoList(array $args)
+    // create test testIfTodoListDeletedAllTaskRelatedWillBeDeleted
+    public function testIfTodoListDeletedAllTaskRelatedWillBeDeleted()
     {
-        return TodoList::factory()->create($args ?? null);
+        // $todoList = $this->createTodoList([]);
+        $task = $this->createTask(['todo_list_id' => $this->list->id]);
+        $task2 = $this->createTask([]);
+
+        $this->deleteJson("api/todo-list/{$this->list->id}")
+            ->assertNoContent();
+
+        $this->assertDatabaseMissing('todo_lists', ['id' => $this->list->id]);
+        $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
+        $this->assertDatabaseHas('tasks', ['id' => $task2->id]);
     }
 
-    // create
 }
