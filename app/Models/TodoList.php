@@ -14,6 +14,17 @@ class TodoList extends Model
         'user_id',
     ];
 
+
+    /* protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($todoList) {
+            // & onDelete todoList cascade delete tasks
+            $todoList->tasks()->delete();
+        });
+    } */
+
     // function hasMany Task
     public function tasks()
     {
