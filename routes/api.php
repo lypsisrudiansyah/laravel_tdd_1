@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TodoListController;
@@ -28,6 +29,7 @@ Route::get('task/{task}', [TaskController::class, 'show'])->name('task.show');
 Route::apiResource('todo-list.task', TaskController::class)->except('show')->shallow();
 
 Route::post('auth/register', [RegisterController::class, 'register'])->name('auth.register');
+Route::post('auth/login', [LoginController::class, 'login'])->name('auth.login');
 // Route::apiResource('todo-list/{todo_list}/task', TaskController::class)->except('show')->shallow();
 // Route::apiResource('/task', TaskController::class);
 // Route::get('task', [TaskController::class, 'index']);
