@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class RegisterController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $user = User::create([
-            'name' => 'Rudiansyah',
-            'email' => 'rudi@mail.com',
-            'password' => bcrypt('1234'),
-        ]);
+        $dataInput = $request->validated();
+        $dataInput['password'] = bcrypt($request->password);
+
+        $user = User::create($dataInput);
 
         return $user;
     }

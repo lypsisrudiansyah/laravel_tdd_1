@@ -11,8 +11,12 @@ class RegisterTest extends TestCase
     use RefreshDatabase;
     public function testAUserCanRegister()
     {
-        $response = $this->postJson('api/auth/register')
-                    ->assertCreated();
+        $response = $this->postJson('api/auth/register', [
+            'name' => 'Rudiansyah',
+            'email' => 'rudi@mail.com',
+            'password' => '1234',
+            'password_confirmation' => '1234',
+        ])->assertCreated();
 
         $this->assertDatabaseHas('users', ['name' => 'Rudiansyah']);
     }
