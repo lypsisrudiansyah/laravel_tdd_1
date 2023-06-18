@@ -22,6 +22,8 @@ class TodoList extends Model
         static::deleting(function ($todoList) {
             // & onDelete todoList cascade delete tasks
             $todoList->tasks()->delete();
+
+            // * the research which way better when we manually create cascading delete on related data : https://gist.github.com/lypsisrudiansyah/bd9f4ba8d7d70c04d14cddf25b4df7ad
         });
     } */
 
