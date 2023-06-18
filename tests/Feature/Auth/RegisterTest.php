@@ -8,6 +8,7 @@ use Tests\TestCase;
 
 class RegisterTest extends TestCase
 {
+    use RefreshDatabase;
     public function testAUserCanRegister()
     {
         $response = $this->postJson('user/register');
