@@ -19,7 +19,6 @@ class TaskFactory extends Factory
     public function definition(array $attributes = [])
     {
         $todoListId = $attributes['todo_list_id'] ?? TodoList::factory()->create()->id;
-        dd($attributes);
         return [
             'todo_list_id' => $todoListId,
             'title' => fake()->name(),
