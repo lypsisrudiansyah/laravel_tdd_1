@@ -25,7 +25,8 @@ To install this application, you need to have PHP, Composer and MySQL installed 
 ## Testing
 
 This application uses PHPUnit for testing. To run the tests, use this command:
-
+`php artisan test`
+or
 `vendor/bin/phpunit`
 
 The tests cover the following features:
