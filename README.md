@@ -29,6 +29,9 @@ This application uses PHPUnit for testing. To run the tests, use this command:
 or
 `vendor/bin/phpunit`
 
+![image](https://github.com/lypsisrudiansyah/laravel_tdd_1/assets/52348378/32d03105-17a2-4dc9-b77c-acb7eb80f057)
+
+
 The tests cover the following features:
 
 - User registration and login
