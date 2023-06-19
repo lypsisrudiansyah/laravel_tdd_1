@@ -1,6 +1,6 @@
 # Laravel TDD Api's Todo List App 
 
-This is a simple web application that allows users to create and manage todo lists and tasks using Laravel and Test Driven Development (TDD).
+This is API's of Todo List App that allows users to create and manage todo lists and tasks using Laravel and Test Driven Development (TDD).
 
 ## Features
 
