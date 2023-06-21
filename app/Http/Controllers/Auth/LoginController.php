@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class LoginController extends Controller
@@ -16,11 +17,16 @@ class LoginController extends Controller
             ->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response("Credentials not match.", Response::HTTP_UNAUTHORIZED);
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], Response::HTTP_UNAUTHORIZED);
         }
 
+        $token = $user->createToken('lypsis-auth');
+
+        Log::info($token);
         return response([
-            'token' => 'asdasd',
+            'token' => $token->plainTextToken,
         ], 200);
     }
 }
