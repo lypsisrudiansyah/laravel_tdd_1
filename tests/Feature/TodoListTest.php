@@ -21,7 +21,9 @@ class TodoListTest extends TestCase
         // $data = ['name' => 'Todo List', 'user_id' => 1];
         // $this->list = $this->createTodoList($data);
 
+        $this->authUser();
         $this->list = $this->createTodoList([]);
+        
     }
 
     public function testFetchIndexTodoList()

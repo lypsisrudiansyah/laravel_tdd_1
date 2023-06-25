@@ -23,9 +23,10 @@ use Illuminate\Support\Facades\Route;
 }); */
 
 // * Manually define routing bundling on apiResource
-Route::apiResource('todo-list', TodoListController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('todo-list', TodoListController::class);
+    
     Route::get('task/{task}', [TaskController::class, 'show'])->name('task.show');
     Route::apiResource('todo-list.task', TaskController::class)->except('show')->shallow();
 });
