@@ -13,7 +13,9 @@ class TodoListTest extends TestCase
 
     public function testTodoListCanHasManyTasks()
     {
-        $todoList = $this->createTodoList([]);
+        // $user = $this->authUser();
+        $user = $this->createUser();
+        $todoList = $this->createTodoList(['user_id' => $user->id]);
         $task = $this->createTask(['todo_list_id' => $todoList->id]);
         $this->assertTrue(true);
 
