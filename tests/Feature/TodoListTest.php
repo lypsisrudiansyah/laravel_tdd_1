@@ -21,13 +21,13 @@ class TodoListTest extends TestCase
         // $data = ['name' => 'Todo List', 'user_id' => 1];
         // $this->list = $this->createTodoList($data);
 
-        $this->authUser();
-        $this->list = $this->createTodoList([]);
-        
+        $user = $this->authUser();
+        $this->list = $this->createTodoList(['user_id' => $user->id]);
     }
 
     public function testFetchIndexTodoList()
     {
+        $this->createTodoList();
         $response = $this->getJson('api/todo-list')
             ->assertOk();
             

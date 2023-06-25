@@ -11,7 +11,8 @@ class TodoListController extends Controller
 {
     public function index()
     {
-        $datas = TodoList::all();
+        // $datas = TodoList::all();
+        $datas = TodoList::where('user_id', auth()->user()->id)->get();
 
         return response()->json($datas);
     }
