@@ -17,8 +17,9 @@ class TodoListTest extends TestCase
         $user = $this->createUser();
         $todoList = $this->createTodoList(['user_id' => $user->id]);
         $task = $this->createTask(['todo_list_id' => $todoList->id]);
-        $this->assertTrue(true);
 
+    
+        $this->assertTrue($todoList->tasks->contains($task));
         $this->assertInstanceOf(Task::class, $todoList->tasks->first());
         $this->assertInstanceOf(Collection::class, $todoList->tasks);
         // $todoList = TodoList::factory()->create();
