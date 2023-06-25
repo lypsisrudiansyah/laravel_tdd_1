@@ -19,6 +19,7 @@ class TaskTest extends TestCase
     {
         parent::setUp();
 
+        $this->authUser();
         $this->task = $this->createTask([]);
     }
 
@@ -78,8 +79,6 @@ class TaskTest extends TestCase
     {
         $user = User::factory()->create();
 
-        Sanctum::actingAs($user);
-        
         $task = Task::factory()->create();
         $response = $this->getJson("api/task/{$task->id}")
             ->assertOk()
@@ -91,7 +90,6 @@ class TaskTest extends TestCase
     public function testFetchSingleTaskNotFound()
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
 
         $response = $this->getJson("api/task/999")
             ->assertNotFound();
