@@ -11,7 +11,12 @@ class TaskChangeStatusTest extends TestCase
 {
     use RefreshDatabase;
 
-    // create function test change status task to started
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->authUser();
+    }
+
     public function testChangeStatusTaskToStarted()
     {
         $todoList = $this->createTodoList([]);

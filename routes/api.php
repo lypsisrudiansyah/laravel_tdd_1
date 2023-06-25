@@ -27,9 +27,9 @@ Route::apiResource('todo-list', TodoListController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('task/{task}', [TaskController::class, 'show'])->name('task.show');
+    Route::apiResource('todo-list.task', TaskController::class)->except('show')->shallow();
 });
 
-Route::apiResource('todo-list.task', TaskController::class)->except('show')->shallow();
 
 Route::post('auth/register', [RegisterController::class, 'register'])->name('auth.register');
 Route::post('auth/login', [LoginController::class, 'login'])->name('auth.login');
