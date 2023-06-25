@@ -3,8 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class TaskTest extends TestCase
@@ -74,6 +76,10 @@ class TaskTest extends TestCase
 
     public function testFetchSingleTask()
     {
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user);
+        
         $task = Task::factory()->create();
         $response = $this->getJson("api/task/{$task->id}")
             ->assertOk()
@@ -84,6 +90,9 @@ class TaskTest extends TestCase
 
     public function testFetchSingleTaskNotFound()
     {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
         $response = $this->getJson("api/task/999")
             ->assertNotFound();
     }
