@@ -25,18 +25,18 @@ class LoginController extends Controller
 
         $token = $user->createToken('lypsis-auth');
 
-        Log::info($token);
+        // Log::info($token);
         return response([
             'token' => $token->plainTextToken,
         ], 200);
     }
 
-    public function asb()
+    /* public function asb()
     {
         $user = Auth::user();
         // $currentAccessToken = $user->currentAccessToken();
 
         return response()->json($user);
         
-    }
+    } */
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TodoListRequest;
 use App\Models\TodoList;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class TodoListController extends Controller
@@ -12,7 +14,11 @@ class TodoListController extends Controller
     public function index()
     {
         // $datas = TodoList::all();
-        $datas = TodoList::where('user_id', auth()->user()->id)->get();
+        // $datas = TodoList::where('user_id', auth()->user()->id)->get();
+        $datas = auth()->user()->todoLists;
+        // $user = auth()->guard('sanctum')->user();
+        $user = Auth::guard('sanctum')->user();
+        Log::info($user);
 
         return response()->json($datas);
     }
