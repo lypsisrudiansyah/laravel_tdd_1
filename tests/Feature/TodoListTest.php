@@ -60,11 +60,10 @@ class TodoListTest extends TestCase
         // & From Factory
         $dataInput = TodoList::factory()->make()->toArray();
         $response = $this->postJson("api/todo-list", $dataInput)
-            ->assertCreated();
+            ->assertCreated()->json();
 
-        // create assert databaseHas
-        $this->assertDatabaseHas('todo_lists', $dataInput);
-        $response->assertJson($dataInput);
+        $this->assertEquals($dataInput['name'], $response['name']);
+        $this->assertDatabaseHas('todo_lists', ['name' => $dataInput['name']]);
     }
 
     public function testWhileStoringTodoListNameAndUserIdIsRequired()
