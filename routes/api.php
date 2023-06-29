@@ -31,7 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('task/{task}', [TaskController::class, 'show'])->name('task.show');
     Route::apiResource('todo-list.task', TaskController::class)->except('show')->shallow();
 
-    Route::apiResource('todo-list', LabelController::class);
+    Route::apiResource('label', LabelController::class);
 });
 
 
