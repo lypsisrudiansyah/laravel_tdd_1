@@ -19,6 +19,7 @@ return new class extends Migration
             // $table->unsignedBigInteger('todo_list_id');
             $table->string('title');
             $table->text('description')->nullable();
+            $table->foreignId('label_id')->nullable()->constrained();
             $table->string('status')->nullable();
             $table->timestamps();
         });

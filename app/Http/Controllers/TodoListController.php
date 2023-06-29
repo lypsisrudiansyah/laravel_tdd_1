@@ -16,11 +16,11 @@ class TodoListController extends Controller
         // $datas = TodoList::all();
         // $datas = TodoList::where('user_id', auth()->user()->id)->get();
         $datas = auth()->user()->todoLists;
-        // $user = auth()->guard('sanctum')->user();
-        $user = Auth::guard('sanctum')->user();
-        Log::info($user);
-
         return response()->json($datas);
+        
+        // * another way to calling authenticated user and using guard
+        // $user = auth()->guard('sanctum')->user();
+        // $user = Auth::guard('sanctum')->user();
     }
 
     public function show(TodoList $todo_list)
