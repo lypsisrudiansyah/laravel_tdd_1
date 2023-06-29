@@ -38,6 +38,31 @@ The tests cover the following features:
 - Todo list creation, editing, deletion and completion
 - Task creation, editing, deletion and completion
 
+#### Test Coverage
+```
+Exceptions\Handler  .......................................................... 100.0 %  
+Http/Controllers/Auth\LoginController  ....................................... 100.0 %  
+Http/Controllers/Auth\RegisterController  .................................... 100.0 %  
+Http/Controllers\Controller  ................................................. 100.0 %  
+Http/Controllers\TaskController  ............................................. 100.0 %  
+Http/Controllers\TodoListController  ......................................... 100.0 %  
+Http\Kernel  ................................................................. 100.0 %  
+Http/Requests\LoginRequest ..................................................... 0.0 %  
+Http/Requests\RegisterRequest  ............................................... 100.0 %  
+Http/Requests\TaskRequest  ................................................... 100.0 %  
+Http/Requests\TodoListRequest  ............................................... 100.0 %  
+Models\Task  ................................................................. 100.0 %  
+Models\TodoList  ............................................................. 100.0 %  
+Models\User  ................................................................. 100.0 %  
+Providers\AppServiceProvider  ................................................ 100.0 %  
+Providers\AuthServiceProvider  ............................................... 100.0 %  
+Providers\BroadcastServiceProvider ............................................. 0.0 %  
+Providers\EventServiceProvider  .............................................. 100.0 %  
+Providers\RouteServiceProvider  .............................................. 100.0 %  
+
+Total Coverage ................................................................ 80.6 %  
+```
+
 ---
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
