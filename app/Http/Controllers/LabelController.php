@@ -9,6 +9,11 @@ class LabelController extends Controller
 {
     public function store(Request $request)
     {
-        Label::create($request->validated());
+        $request->validate([
+            'name' => 'required',
+            'color' => 'required',
+        ]);
+
+        return Label::create($request->validated());
     }
 }

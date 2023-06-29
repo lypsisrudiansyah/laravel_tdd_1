@@ -8,6 +8,8 @@ use Tests\TestCase;
 
 class LabelTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testUserCanCreateNewLabel()
     {
         $dataInput = [
