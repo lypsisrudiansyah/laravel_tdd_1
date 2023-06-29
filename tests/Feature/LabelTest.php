@@ -8,15 +8,14 @@ use Tests\TestCase;
 
 class LabelTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    public function testUserCanCreateNewLabel()
     {
-        $response = $this->get('/');
+        $dataInput = [
+            'title' => 'Test Label',
+            'color' => 'red',
+        ];
+        $response = $this->postJson('/api/label', $dataInput)->assertCreated();
 
-        $response->assertStatus(200);
+        $this->assertDatabaseHas('labels', $dataInput);
     }
 }
