@@ -21,9 +21,9 @@ class LabelTest extends TestCase
     public function testUserCanCreateNewLabel()
     {
         // $label = $this->createLabel();
-        // * using factory()->raw() help you to make input data using factory but when we call the raw() its not create the data in database
+        // & using factory()->raw() help you to make input data using factory but when we call the raw() its not create the data in database
         $labelInput = Label::factory()->raw();
-        // * while using create() it will create the data in database
+        // & while using create() it will create the data in database
         // $labelInput = $this->createLabel()->toArray();
 
         $response = $this->postJson('/api/label', $labelInput)->assertCreated();
@@ -35,5 +35,16 @@ class LabelTest extends TestCase
         // ]);
         $totalLabel = DB::table('labels')->count();
         Log::info('total label: ' . $totalLabel);
+    }
+
+    public function testUserCanUpdateLabel()
+    {
+        $label = $this->createLabel();
+
+        $labelInput = Label::factory()->raw();
+
+        $this->putJson('/api/label/' . $label->id, $labelInput)->assertOk();
+
+        $this->assertDatabaseHas('labels', $labelInput);
     }
 }
