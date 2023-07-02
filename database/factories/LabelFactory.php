@@ -17,7 +17,8 @@ class LabelFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => $this->faker->word,
+            'color' => $this->faker->hexColor,
         ];
     }
 }
