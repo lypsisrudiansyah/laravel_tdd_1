@@ -2,7 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Models\Label;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class LabelTest extends TestCase
@@ -14,17 +17,23 @@ class LabelTest extends TestCase
         parent::setUp();
         $this->authUser();
     }
-    
+
     public function testUserCanCreateNewLabel()
     {
+        // $label = $this->createLabel();
+        // * using factory()->raw() help you to make input data using factory but when we call the raw() its not create the data in database
+        $labelInput = Label::factory()->raw();
+        // * while using create() it will create the data in database
+        // $labelInput = $this->createLabel()->toArray();
 
-        $dataInput = [
-            'title' => 'Test Label',
-            'color' => 'red',
-        ];
+        $response = $this->postJson('/api/label', $labelInput)->assertCreated();
 
-        $response = $this->postJson('/api/label', $dataInput)->assertCreated();
-
-        $this->assertDatabaseHas('labels', $dataInput);
+        $this->assertDatabaseHas('labels', $labelInput);
+        // $this->assertDatabaseHas('labels', [
+        //     'title' => $labelInput['title'],
+        //     'color' => $labelInput['color'],
+        // ]);
+        $totalLabel = DB::table('labels')->count();
+        Log::info('total label: ' . $totalLabel);
     }
 }
