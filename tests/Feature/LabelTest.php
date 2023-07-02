@@ -36,6 +36,16 @@ class LabelTest extends TestCase
         $totalLabel = DB::table('labels')->count();
         Log::info('total label: ' . $totalLabel);
     }
+    
+    public function testUserOnCreateLabelButFieldRequiredFilledByEmptyValue()
+    {
+        $labelInput = Label::factory()->raw([
+            'color' => null,
+        ]);
+
+        $this->postJson('/api/label', $labelInput)->assertUnprocessable()
+        ->assertJsonValidationErrors(['color']);
+    }
 
     public function testUserCanUpdateLabel()
     {

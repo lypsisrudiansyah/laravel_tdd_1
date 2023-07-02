@@ -66,7 +66,7 @@ class TaskTest extends TestCase
         $this->assertDatabaseHas('tasks', $dataInput);
     }
 
-    // & Now Rules Update is allow Nullable Request
+    // & Now Rules Update is allow Nullable Request because for some case it will be better way to check just filled data we updating on database
     /* public function testUpdateTaskOfATodoListWhileFieldRequiredFilledByEmptyValue()
     {
         $dataInput = ['title' => '', 'description' => 'New Description', 'status' => ''];
