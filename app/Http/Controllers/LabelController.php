@@ -18,4 +18,10 @@ class LabelController extends Controller
         $label->update($request->validated());
         return response()->json($label)->setStatusCode(200);
     }
+
+    public function destroy(Label $label)
+    {
+        $label->delete();
+        return response()->json($label)->setStatusCode(204);
+    }
 }

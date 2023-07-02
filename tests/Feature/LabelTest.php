@@ -58,4 +58,13 @@ class LabelTest extends TestCase
         
         $this->assertDatabaseHas('labels', $labelInput);
     }
+
+    public function testUserCanDeleteLabel()
+    {
+        $label = $this->createLabel();
+
+        $response = $this->deleteJson('/api/label/' . $label->id)->assertNoContent();
+
+        $this->assertDatabaseMissing('labels', $label->toArray());
+    }
 }
