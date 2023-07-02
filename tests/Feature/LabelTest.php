@@ -43,8 +43,9 @@ class LabelTest extends TestCase
 
         $labelInput = Label::factory()->raw();
 
-        $this->putJson('/api/label/' . $label->id, $labelInput)->assertOk();
-
+        $response = $this->putJson('/api/label/' . $label->id, $labelInput)->assertOk();
+        Log::info('response: ' . $response->getContent() . '\n status: ' . $response->getStatusCode());
+        
         $this->assertDatabaseHas('labels', $labelInput);
     }
 }

@@ -12,4 +12,10 @@ class LabelController extends Controller
     {
         return Label::create($request->validated());
     }
+
+    public function update(LabelRequest $request, Label $label)
+    {
+        $label->update($request->validated());
+        return response()->json($label)->setStatusCode(200);
+    }
 }
