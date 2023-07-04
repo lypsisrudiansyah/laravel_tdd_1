@@ -45,14 +45,29 @@ class TaskTest extends TestCase
         $dataInput['label_id'] = $label->id;
         // $dataInput = $this->task->toArray();
         // $response = $this->postJson("api/todo-list/{$this->task->todo_list_id}/task", $dataInput);
-        // dd($response);
-        $response = $this->postJson("api/todo-list/{$this->task->todo_list_id}/task", $dataInput)
+        $this->postJson("api/todo-list/{$this->task->todo_list_id}/task", $dataInput)
             ->assertCreated()->assertJsonStructure(array_keys($dataInput));
 
         $this->assertDatabaseHas('tasks', [
             'title' => $dataInput['title'],
             'status' => $dataInput['status'],
             'label_id' => $dataInput['label_id'],
+        ]);
+    }
+
+    public function testStoreTaskOfATodoListWithoutLabel()
+    {
+        $todoList = $this->createTodoList([]);
+        $label = $this->createLabel();
+        $dataInput = $this->createTask(['todo_list_id' => $this->task->todo_list_id, 'label_id' => $label->id])->toArray();
+        $dataInput['label_id'] = null;
+        $this->postJson("api/todo-list/{$this->task->todo_list_id}/task", $dataInput)
+            ->assertCreated()->assertJsonStructure(array_keys($dataInput));
+
+        $this->assertDatabaseHas('tasks', [
+            'title' => $dataInput['title'],
+            'status' => $dataInput['status'],
+            'label_id' => null,
         ]);
     }
 
