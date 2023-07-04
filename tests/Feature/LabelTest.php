@@ -53,6 +53,11 @@ class LabelTest extends TestCase
 
         $labelInput = Label::factory()->raw();
 
+
+        $labelInput = [
+            'title' => 'updated title',
+        ];
+
         $response = $this->putJson('/api/label/' . $label->id, $labelInput)->assertOk();
         Log::info('response: ' . $response->getContent() . '\n status: ' . $response->getStatusCode());
         
