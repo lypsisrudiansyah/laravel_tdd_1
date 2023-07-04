@@ -75,12 +75,13 @@ class LabelTest extends TestCase
         $this->assertDatabaseMissing('labels', $label->toArray());
     }
 
-    public function fetchingAllLabelForAUser()
+    public function testFetchingAllLabelForAUser()
     {
-        $label = $this->createLabel(['user_id' => $this->user->id]);]);
+        $label = $this->createLabel(['user_id' => $this->user->id]);
+        $this->createLabel();
 
         $response = $this->getJson('/api/label')->assertOk();
 
-        $this->assertDatabaseHas('labels', $label->toArray());
+        $this->assertEquals($response->json()[0]['title'], $label->id);
     }
 }
