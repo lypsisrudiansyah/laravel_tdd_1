@@ -12,10 +12,12 @@ class LabelTest extends TestCase
 {
     use RefreshDatabase;
 
+    private $user;
+    
     public function setUp(): void
     {
         parent::setUp();
-        $this->authUser();
+        $this->user = $this->authUser();
     }
 
     public function testUserCanCreateNewLabel()
@@ -28,11 +30,11 @@ class LabelTest extends TestCase
 
         $response = $this->postJson('/api/label', $labelInput)->assertCreated();
 
-        $this->assertDatabaseHas('labels', $labelInput);
-        // $this->assertDatabaseHas('labels', [
-        //     'title' => $labelInput['title'],
-        //     'color' => $labelInput['color'],
-        // ]);
+        // $this->assertDatabaseHas('labels', $labelInput);
+        $this->assertDatabaseHas('labels', [
+            'title' => $labelInput['title'],
+            'color' => $labelInput['color'],
+        ]);
         $totalLabel = DB::table('labels')->count();
         Log::info('total label: ' . $totalLabel);
     }
@@ -71,5 +73,14 @@ class LabelTest extends TestCase
         $response = $this->deleteJson('/api/label/' . $label->id)->assertNoContent();
 
         $this->assertDatabaseMissing('labels', $label->toArray());
+    }
+
+    public function fetchingAllLabelForAUser()
+    {
+        $label = $this->createLabel(['user_id' => $this->user->id]);]);
+
+        $response = $this->getJson('/api/label')->assertOk();
+
+        $this->assertDatabaseHas('labels', $label->toArray());
     }
 }
