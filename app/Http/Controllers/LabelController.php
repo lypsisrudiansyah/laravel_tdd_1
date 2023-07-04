@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class LabelController extends Controller
 {
+
+    public function index()
+    {
+        $labels = auth()->user()->labels;
+
+        return response()->json($labels)->setStatusCode(200);
+    }
+    
     public function store(LabelRequest $request)
     {
         // return Label::create($request->validated());

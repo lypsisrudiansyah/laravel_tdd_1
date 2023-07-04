@@ -82,6 +82,7 @@ class LabelTest extends TestCase
 
         $response = $this->getJson('/api/label')->assertOk();
 
-        $this->assertEquals($response->json()[0]['title'], $label->id);
+        $this->assertEquals($response->json()[0]['id'], $label->id);
+        $this->assertEquals($response->json()[0]['title'], $label->title);
     }
 }
