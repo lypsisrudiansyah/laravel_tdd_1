@@ -24,12 +24,16 @@ To install this application, you need to have PHP, Composer and MySQL installed 
 
 ## Testing
 
+### Testing Using PHP Unit
 This application uses PHPUnit for testing. To run the tests, use this command:
 `php artisan test`
 or
 `vendor/bin/phpunit`
 
 ![image](https://github.com/lypsisrudiansyah/laravel_tdd_1/assets/52348378/32d03105-17a2-4dc9-b77c-acb7eb80f057)
+
+### Testing on VsCode
+![image](https://github.com/lypsisrudiansyah/laravel_tdd_1/assets/52348378/860195e7-5ad1-4687-b847-d426148cc847)
 
 
 The tests cover the following features:
