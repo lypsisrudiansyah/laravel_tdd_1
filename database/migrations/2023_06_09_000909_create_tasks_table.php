@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId("todo_list_id")->constrained()->onDelete('cascade');
+            $table->foreignId("label_id")->nullable()->constrained();
             // $table->unsignedBigInteger('todo_list_id');
             $table->string('title');
             $table->text('description')->nullable();
-            $table->foreignId('label_id')->nullable()->constrained();
             $table->string('status')->nullable();
             $table->timestamps();
         });

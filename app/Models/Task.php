@@ -16,6 +16,7 @@ class Task extends Model
 
     protected $fillable = [
         'todo_list_id',
+        'label_id',
         'title',
         'description',
         'status',
@@ -24,5 +25,10 @@ class Task extends Model
     public function todoList()
     {
         return $this->belongsTo(TodoList::class);
+    }
+
+    public function label()
+    {
+        return $this->belongsTo(Label::class);
     }
 }

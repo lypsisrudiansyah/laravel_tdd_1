@@ -40,11 +40,20 @@ class TaskTest extends TestCase
     {
         // $dataInput = Task::factory()->make()->toArray();
         $todoList = $this->createTodoList([]);
-        $dataInput = $this->createTask(['todo_list_id' => $this->task->todo_list_id, 'id' => null])->toArray();
+        $label = $this->createLabel();
+        $dataInput = $this->createTask(['todo_list_id' => $this->task->todo_list_id, 'label_id' => $label->id])->toArray();
+        $dataInput['label_id'] = $label->id;
         // $dataInput = $this->task->toArray();
-        // dd($dataInput);
+        // $response = $this->postJson("api/todo-list/{$this->task->todo_list_id}/task", $dataInput);
+        // dd($response);
         $response = $this->postJson("api/todo-list/{$this->task->todo_list_id}/task", $dataInput)
             ->assertCreated()->assertJsonStructure(array_keys($dataInput));
+
+        $this->assertDatabaseHas('tasks', [
+            'title' => $dataInput['title'],
+            'status' => $dataInput['status'],
+            'label_id' => $dataInput['label_id'],
+        ]);
     }
 
     public function testStoreTaskOfATodoListWhileFieldRequiredFilledByEmptyValue()
