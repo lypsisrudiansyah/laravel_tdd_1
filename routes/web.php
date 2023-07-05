@@ -1,5 +1,6 @@
 <?php
 
+use Google\Client;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+
+Route::get('/drive', function () {
+    $client = new Client();
+    $client->setAuthConfig(storage_path('app/credentials.json'));
 });
