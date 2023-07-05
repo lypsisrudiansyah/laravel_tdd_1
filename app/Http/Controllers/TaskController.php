@@ -20,9 +20,9 @@ class TaskController extends Controller
 
     public function store(TaskRequest $request, TodoList $todoList)
     {
-        $data = $request->all();
+        $request->validated();
         // dd($data);
-        $task = $todoList->tasks()->create($data);
+        $task = $todoList->tasks()->create($request->validated());
         // $data['todo_list_id'] = $todoList->id;
         // $task = Task::create($data);
         return response()->json($task)->setStatusCode(201);
@@ -30,8 +30,7 @@ class TaskController extends Controller
 
     public function update(Request $request, Task $task)
     {
-        $data = $request->all();
-        $task->update($data);
+        $task->update($request->all());
         return response()->json($task)->setStatusCode(200);
     }
 
