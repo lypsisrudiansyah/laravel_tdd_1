@@ -32,6 +32,11 @@ Route::get('/drive', function () {
 
     // $service = new Google\Service\Drive($client);
     $url = $client->createAuthUrl();
-    return $url;
+    return redirect($url);
+});
 
+Route::post('google-drive/callback', function() {
+    $client = new Client();
+    $code = request('code');
+    $client->fetchAccessTokenWithAuthCode($code);
 });
