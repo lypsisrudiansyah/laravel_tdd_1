@@ -20,34 +20,52 @@ Route::get('/', function () {
 });
 
 
-Route::get('/drive', function () {
+function clientHandler() : Client
+{
     $client = new Client();
     // $client->setAuthConfig(storage_path('app/credentials.json'));
     $client->setClientId(env('GOOGLE_OAUTH_CLIENT_ID'));
     $client->setClientSecret(env('GOOGLE_OAUTH_CLIENT_SECRET'));
     $client->setRedirectUri('http://localhost:8000/google-drive/callback');
+
     $client->setScopes([
         'https://www.googleapis.com/auth/drive',
         'https://www.googleapis.com/auth/drive.file'
     ]);
+    return $client;
+}
+
+Route::get('/drive', function () {
+    /* $client = new Client();
+    // $client->setAuthConfig(storage_path('app/credentials.json'));
+    $client->setClientId(env('GOOGLE_OAUTH_CLIENT_ID'));
+    $client->setClientSecret(env('GOOGLE_OAUTH_CLIENT_SECRET'));
+    $client->setRedirectUri('http://localhost:8000/google-drive/callback');
+    // $client->setRedirectUri('http://localhost:8000/drive');
+    $client->setScopes([
+        'https://www.googleapis.com/auth/drive',
+        'https://www.googleapis.com/auth/drive.file'
+    ]); */
+
+    $client = clientHandler();
 
     // $service = new Google\Service\Drive($client);
-    if (!isset($_GET['code'])) {
-        $url = $client->createAuthUrl();
-        return redirect($url);
-    } else {
-        // $code = request('code');
-        $code = $_GET['code'];
-        Log::info('code: ' . $code);
-        $accessToken = $client->fetchAccessTokenWithAuthCode($code);
-        Log::info('accessToken : ' . json_encode($accessToken));
+    Log::info('on create url');
 
-        return $accessToken;
-    }
+    $url = $client->createAuthUrl();
+    return redirect($url);
 });
 
 Route::get('google-drive/callback', function () {
-    $client = new Client([
-        'verify' => false
-    ]);
+    $client = clientHandler();
+
+    Log::info('on fetch access token');
+
+    // $code = request('code');
+    $code = $_GET['code'];
+    Log::info('code: ' . $code);
+    $accessToken = $client->fetchAccessTokenWithAuthCode($code);
+    Log::info('accessToken : ' . json_encode($accessToken));
+
+    return $accessToken;
 });
