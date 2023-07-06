@@ -25,4 +25,13 @@ Route::get('/drive', function () {
     $client->setClientId(env('GOOGLE_OAUTH_CLIENT_ID'));
     $client->setClientSecret(env('GOOGLE_OAUTH_CLIENT_SECRET'));
     $client->setRedirectUri('http://localhost:8000/google-drive/callback');
+    $client->setScopes([
+        'https://www.googleapis.com/auth/drive',
+        'https://www.googleapis.com/auth/drive.file'
+    ]);
+
+    // $service = new Google\Service\Drive($client);
+    $url = $client->createAuthUrl();
+    return $url;
+
 });
