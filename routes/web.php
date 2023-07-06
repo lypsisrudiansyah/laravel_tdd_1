@@ -21,5 +21,8 @@ Route::get('/', function () {
 
 Route::get('/drive', function () {
     $client = new Client();
-    $client->setAuthConfig(storage_path('app/credentials.json'));
+    // $client->setAuthConfig(storage_path('app/credentials.json'));
+    $client->setClientId(env('GOOGLE_OAUTH_CLIENT_ID'));
+    $client->setClientSecret(env('GOOGLE_OAUTH_CLIENT_SECRET'));
+    $client->setRedirectUri('http://localhost:8000/google-drive/callback');
 });
