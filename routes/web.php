@@ -1,6 +1,7 @@
 <?php
 
 use Google\Client;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,12 +32,22 @@ Route::get('/drive', function () {
     ]);
 
     // $service = new Google\Service\Drive($client);
-    $url = $client->createAuthUrl();
-    return redirect($url);
+    if (!isset($_GET['code'])) {
+        $url = $client->createAuthUrl();
+        return redirect($url);
+    } else {
+        // $code = request('code');
+        $code = $_GET['code'];
+        Log::info('code: ' . $code);
+        $accessToken = $client->fetchAccessTokenWithAuthCode($code);
+        Log::info('accessToken : ' . json_encode($accessToken));
+
+        return $accessToken;
+    }
 });
 
-Route::post('google-drive/callback', function() {
-    $client = new Client();
-    $code = request('code');
-    $client->fetchAccessTokenWithAuthCode($code);
+Route::get('google-drive/callback', function () {
+    $client = new Client([
+        'verify' => false
+    ]);
 });
