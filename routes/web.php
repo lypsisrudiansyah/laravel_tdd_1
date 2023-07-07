@@ -55,7 +55,10 @@ Route::get('google-drive/callback', function () {
     $accessToken = $client->fetchAccessTokenWithAuthCode($code);
     Log::info('accessToken : ' . json_encode($accessToken));
 
-    return $accessToken;
+    uploadToGoogleDrive($accessToken['access_token']);
+    
+    // return $accessToken[];
+    echo "Succeded Upload File :), this access expires in : " . $accessToken['expires_in'];
 });
 
 
@@ -67,4 +70,21 @@ function uploadToGoogleDrive(string $accessToken)
     $service = new Google\Service\Drive($client);
     $file = new Google\Service\Drive\DriveFile();
 
+    DEFINE("TESTFILE", 'testfile-small.txt');
+    if (!file_exists(TESTFILE)) {
+        $fh = fopen(TESTFILE, 'w');
+        fseek($fh, 1024 * 1024);
+        fwrite($fh, "!", 1);
+        fclose($fh);
+    }
+
+    $file->setName("rudis_file");
+    $result2 = $service->files->create(
+        $file,
+        [
+            'data' => file_get_contents(TESTFILE),
+            'mimeType' => 'application/octet-stream',
+            'uploadType' => 'multipart'
+        ]
+    );
 }
