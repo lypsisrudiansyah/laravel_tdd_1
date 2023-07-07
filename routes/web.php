@@ -57,3 +57,14 @@ Route::get('google-drive/callback', function () {
 
     return $accessToken;
 });
+
+
+function uploadToGoogleDrive(string $accessToken)
+{
+    $client = new Client();
+    $client->setAccessToken($accessToken);
+
+    $service = new Google\Service\Drive($client);
+    $file = new Google\Service\Drive\DriveFile();
+
+}
