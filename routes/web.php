@@ -20,14 +20,13 @@ Route::get('/', function () {
 });
 
 
-function clientHandler() : Client
+function googleApiClientHandler() : Client
 {
     $client = new Client();
     // $client->setAuthConfig(storage_path('app/credentials.json'));
     $client->setClientId(env('GOOGLE_OAUTH_CLIENT_ID'));
     $client->setClientSecret(env('GOOGLE_OAUTH_CLIENT_SECRET'));
     $client->setRedirectUri('http://localhost:8000/google-drive/callback');
-
     $client->setScopes([
         'https://www.googleapis.com/auth/drive',
         'https://www.googleapis.com/auth/drive.file'
@@ -36,18 +35,7 @@ function clientHandler() : Client
 }
 
 Route::get('/drive', function () {
-    /* $client = new Client();
-    // $client->setAuthConfig(storage_path('app/credentials.json'));
-    $client->setClientId(env('GOOGLE_OAUTH_CLIENT_ID'));
-    $client->setClientSecret(env('GOOGLE_OAUTH_CLIENT_SECRET'));
-    $client->setRedirectUri('http://localhost:8000/google-drive/callback');
-    // $client->setRedirectUri('http://localhost:8000/drive');
-    $client->setScopes([
-        'https://www.googleapis.com/auth/drive',
-        'https://www.googleapis.com/auth/drive.file'
-    ]); */
-
-    $client = clientHandler();
+    $client = googleApiClientHandler();
 
     // $service = new Google\Service\Drive($client);
     Log::info('on create url');
@@ -57,7 +45,7 @@ Route::get('/drive', function () {
 });
 
 Route::get('google-drive/callback', function () {
-    $client = clientHandler();
+    $client = googleApiClientHandler();
 
     Log::info('on fetch access token');
 
