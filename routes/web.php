@@ -41,7 +41,8 @@ Route::get('/drive', function () {
     Log::info('on create url');
 
     $url = $client->createAuthUrl();
-    return redirect($url);
+    // return redirect($url);
+    return $url;
 });
 
 Route::get('google-drive/callback', function () {
