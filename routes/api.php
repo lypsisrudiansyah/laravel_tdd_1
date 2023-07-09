@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TodoListController;
 use Illuminate\Http\Request;
@@ -32,12 +33,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('todo-list.task', TaskController::class)->except('show')->shallow();
 
     Route::apiResource('label', LabelController::class);
+
+    Route::get('service/connect/{service}', [ServiceController::class, 'connectService']);
 });
 
 
 Route::post('auth/register', [RegisterController::class, 'register'])->name('auth.register');
 Route::post('auth/login', [LoginController::class, 'login'])->name('auth.login');
-Route::get('asb', [LoginController::class, 'asb'])->name('auth.asb');
+
+
 // Route::apiResource('todo-list/{todo_list}/task', TaskController::class)->except('show')->shallow();
 // Route::apiResource('/task', TaskController::class);
 // Route::get('task', [TaskController::class, 'index']);

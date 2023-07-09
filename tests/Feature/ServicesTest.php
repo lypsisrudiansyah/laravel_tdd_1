@@ -15,8 +15,9 @@ class ServicesTest extends TestCase
      */
     public function testAUserCanConnectToGoogleServiceAndTokenStored()
     {
-        $this->getJson('google-service/connect')
-        ->assertOk->json();
-        
+        // $this->withoutExceptionHandling();
+        $this->getJson('api/service/connect/google-drive')
+        ->assertOk()->json();
+
     }
 }
