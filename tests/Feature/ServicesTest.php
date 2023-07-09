@@ -8,14 +8,12 @@ use Tests\TestCase;
 
 class ServicesTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
+    use RefreshDatabase;
+    
     public function testAUserCanConnectToGoogleServiceAndTokenStored()
     {
-        // $this->withoutExceptionHandling();
+        $this->authUser();
+        
         $this->getJson('api/service/connect/google-drive')
         ->assertOk()->json();
 

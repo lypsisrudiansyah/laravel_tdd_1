@@ -38,7 +38,7 @@ Route::get('/drive', function () {
     $client = googleApiClientHandler();
 
     // $service = new Google\Service\Drive($client);
-    Log::info('on create url');
+    // Log::info('on create url');
 
     $url = $client->createAuthUrl();
     // return redirect($url);
