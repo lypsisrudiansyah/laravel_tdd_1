@@ -20,6 +20,11 @@ class ServiceController extends Controller
         }
     }
 
+    public function callback()
+    {
+        
+    }
+
     private const GDRIVE_SCOPES = [
         'https://www.googleapis.com/auth/drive',
         'https://www.googleapis.com/auth/drive.file'

@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('label', LabelController::class);
 
     Route::get('service/connect/{service}', [ServiceController::class, 'connectService']);
+    Route::post('service/callback/', [ServiceController::class, 'callback']);
 });
 
 

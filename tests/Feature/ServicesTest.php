@@ -9,11 +9,16 @@ use Tests\TestCase;
 class ServicesTest extends TestCase
 {
     use RefreshDatabase;
+    private $user;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->user = $this->authUser();
+    }
     
     public function testAUserCanConnectToGoogleServiceAndTokenStored()
     {
-        $this->authUser();
-        
         $response = $this->getJson('api/service/connect/google-drive')
         ->assertOk();
 
@@ -21,6 +26,11 @@ class ServicesTest extends TestCase
             'auth_url'
         ]);
         $this->assertNotNull($response['auth_url']);
+    }
+
+    public function testServiceCallbackWillStoreToken()
+    {
+        $this->postJson('service/callback')->assertOk();
     }
 }
  
