@@ -20,7 +20,7 @@ Route::get('/', function () {
 });
 
 
-function googleApiClientHandler() : Client
+/* private function googleApiClientHandler() : Client
 {
     $client = new Client();
     // $client->setAuthConfig(storage_path('app/credentials.json'));
@@ -32,7 +32,7 @@ function googleApiClientHandler() : Client
         'https://www.googleapis.com/auth/drive.file'
     ]);
     return $client;
-}
+} */
 
 Route::get('/drive', function () {
     $client = googleApiClientHandler();
@@ -61,31 +61,3 @@ Route::get('google-drive/callback', function () {
     // return $accessToken[];
     echo "Succeded Upload File :), this access expires in : " . $accessToken['expires_in'];
 });
-
-
-function uploadToGoogleDrive(string $accessToken)
-{
-    $client = new Client();
-    $client->setAccessToken($accessToken);
-
-    $service = new Google\Service\Drive($client);
-    $file = new Google\Service\Drive\DriveFile();
-
-    DEFINE("TESTFILE", 'testfile-small.txt');
-    if (!file_exists(TESTFILE)) {
-        $fh = fopen(TESTFILE, 'w');
-        fseek($fh, 1024 * 1024);
-        fwrite($fh, "!", 1);
-        fclose($fh);
-    }
-
-    $file->setName("rudis_file");
-    $result2 = $service->files->create(
-        $file,
-        [
-            'data' => file_get_contents(TESTFILE),
-            'mimeType' => 'application/octet-stream',
-            'uploadType' => 'multipart'
-        ]
-    );
-}

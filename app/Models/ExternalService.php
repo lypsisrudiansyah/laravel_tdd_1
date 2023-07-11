@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class ExternalService extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'name',
+        'access_token',
+    ];
 }
