@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ExternalServiceController;
 use App\Http\Controllers\LabelController;
-use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TodoListController;
 use Illuminate\Http\Request;
@@ -34,8 +34,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('label', LabelController::class);
 
-    Route::get('service/connect/{service}', [ServiceController::class, 'connectService']);
-    Route::post('service/callback/', [ServiceController::class, 'callback']);
+    Route::get('external-service/connect/{serviceName}', [ExternalServiceController::class, 'connectService']);
+    Route::post('external-service/callback', [ExternalServiceController::class, 'callback']);
 });
 
 

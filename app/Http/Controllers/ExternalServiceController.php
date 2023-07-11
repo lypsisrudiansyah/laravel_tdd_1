@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ExternalService;
 use Google\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class ServiceController extends Controller
+class ExternalServiceController extends Controller
 {
-    public function connectService(Request $request)
+    public function connectService($serviceName)
     {
-        if ($request->service === 'google-drive') {
-            $client = self::googleApiClientHandler();
+        if ($serviceName === 'google-drive') {
+            $client = self::customGoogleApiClientHandler();
             $url = $client->createAuthUrl();
             
             // return $url;
@@ -23,16 +24,19 @@ class ServiceController extends Controller
 
     public function callback(Request $request)
     {
-        $client = googleApiClientHandler();
+        $client = self::customGoogleApiClientHandler();
 
         Log::info('on fetch access token');
 
         // $code = request('code');
-        $code = $_GET['code'];
-        Service
-        Log::info('code: ' . $code);
+        
         $accessToken = $client->fetchAccessTokenWithAuthCode($request->code);
         Log::info('accessToken : ' . json_encode($accessToken));
+        ExternalService::create([
+            'user_id' => auth()->id,
+            'name' => 'google-drive',
+            'access_token' => json_encode($accessToken),
+        ]);
         return $accessToken;
    
     }
@@ -42,7 +46,7 @@ class ServiceController extends Controller
         'https://www.googleapis.com/auth/drive.file'
     ]; 
 
-    private function googleApiClientHandler(): Client
+    private function customGoogleApiClientHandler(): Client
     {
         $client = new Client();
         // $client->setAuthConfig(storage_path('app/credentials.json'));

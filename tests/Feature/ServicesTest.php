@@ -19,7 +19,7 @@ class ServicesTest extends TestCase
     
     public function testAUserCanConnectToGoogleServiceAndTokenStored()
     {
-        $response = $this->getJson('api/service/connect/google-drive')
+        $response = $this->getJson('api/external-service/connect/google-drive')
         ->assertOk();
 
         $response->assertJsonStructure([
@@ -30,7 +30,11 @@ class ServicesTest extends TestCase
 
     public function testServiceCallbackWillStoreToken()
     {
-        $this->postJson('service/callback')->assertOk();
+        $this->postJson('api/external-service/callback')->assertOk();
+
+        $this->assertDatabaseHas('external_services', [
+            'user_id' => $this->user->id,
+        ]);
     }
 }
  
