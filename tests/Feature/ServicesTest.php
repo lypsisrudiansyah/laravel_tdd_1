@@ -14,8 +14,13 @@ class ServicesTest extends TestCase
     {
         $this->authUser();
         
-        $this->getJson('api/service/connect/google-drive')
-        ->assertOk()->json();
+        $response = $this->getJson('api/service/connect/google-drive')
+        ->assertOk();
 
+        $response->assertJsonStructure([
+            'auth_url'
+        ]);
+        $this->assertNotNull($response['auth_url']);
     }
 }
+ 
