@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Google\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ServiceController extends Controller
 {
@@ -20,9 +21,20 @@ class ServiceController extends Controller
         }
     }
 
-    public function callback()
+    public function callback(Request $request)
     {
-        
+        $client = googleApiClientHandler();
+
+        Log::info('on fetch access token');
+
+        // $code = request('code');
+        $code = $_GET['code'];
+        Service
+        Log::info('code: ' . $code);
+        $accessToken = $client->fetchAccessTokenWithAuthCode($request->code);
+        Log::info('accessToken : ' . json_encode($accessToken));
+        return $accessToken;
+   
     }
 
     private const GDRIVE_SCOPES = [
