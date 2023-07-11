@@ -12,6 +12,6 @@ class ExternalService extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'access_token',
+        'token',
     ];
 }

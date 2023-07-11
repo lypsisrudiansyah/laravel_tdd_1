@@ -30,10 +30,13 @@ class ServicesTest extends TestCase
 
     public function testServiceCallbackWillStoreToken()
     {
-        $this->postJson('api/external-service/callback')->assertOk();
+        $this->postJson('api/external-service/callback', [
+            'code' => 'dummy-code',
+        ])->assertOk();
 
         $this->assertDatabaseHas('external_services', [
             'user_id' => $this->user->id,
+            'name' => 'google-drive',
         ]);
     }
 }

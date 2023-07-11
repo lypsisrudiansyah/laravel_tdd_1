@@ -33,9 +33,9 @@ class ExternalServiceController extends Controller
         $accessToken = $client->fetchAccessTokenWithAuthCode($request->code);
         Log::info('accessToken : ' . json_encode($accessToken));
         ExternalService::create([
-            'user_id' => auth()->id,
+            'user_id' => auth()->user()->id,
             'name' => 'google-drive',
-            'access_token' => json_encode($accessToken),
+            'token' => json_encode($accessToken),
         ]);
         return $accessToken;
    
