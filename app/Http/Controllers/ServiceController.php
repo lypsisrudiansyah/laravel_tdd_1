@@ -10,24 +10,30 @@ class ServiceController extends Controller
     public function connectService(Request $request)
     {
         if ($request->service === 'google-drive') {
-            $client = googleApiClientHandler();
+            $client = self::googleApiClientHandler();
             $url = $client->createAuthUrl();
             
-            return $url;
+            // return $url;
+            return response()->json([
+                'auth_url' => $url
+            ])->setStatusCode(200);
         }
     }
+
+    private const GDRIVE_SCOPES = [
+        'https://www.googleapis.com/auth/drive',
+        'https://www.googleapis.com/auth/drive.file'
+    ]; 
 
     private function googleApiClientHandler(): Client
     {
         $client = new Client();
         // $client->setAuthConfig(storage_path('app/credentials.json'));
-        $client->setClientId(env('GOOGLE_OAUTH_CLIENT_ID'));
-        $client->setClientSecret(env('GOOGLE_OAUTH_CLIENT_SECRET'));
-        $client->setRedirectUri('http://localhost:8000/google-drive/callback');
-        $client->setScopes([
-            'https://www.googleapis.com/auth/drive',
-            'https://www.googleapis.com/auth/drive.file'
-        ]);
+        $config = config('services.google_drive');
+        $client->setClientId($config['client_id']);
+        $client->setClientSecret($config['client_secret']);
+        $client->setRedirectUri($config['redirect_url']);
+        $client->setScopes(self::GDRIVE_SCOPES);
         return $client;
     }
 }
