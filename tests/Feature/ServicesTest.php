@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\ExternalService;
 use Google\Client;
+use App\CustomServices\GoogleOAuthApiClient;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Mockery\MockInterface;
@@ -22,6 +23,11 @@ class ServicesTest extends TestCase
     
     public function testAUserCanConnectToGoogleServiceAndTokenStored()
     {
+        $this->mock(GoogleOAuthApiClient::class, function (MockInterface $mock) {
+            $mock->shouldReceive('setScopes'); 
+            $mock->shouldReceive('createAuthUrl')->andReturn('http://localhost'); 
+        });
+        
         $response = $this->getJson('api/external-service/connect/google-drive')
         ->assertOk();
 
@@ -33,11 +39,12 @@ class ServicesTest extends TestCase
 
     public function testServiceCallbackWillStoreToken()
     {
-        $this->mock(Client::class, function (MockInterface $mock) {
-            $mock->shouldReceive('setClientId')->once();   
+        // $this->mock(GoogleOAuthApiClient::class, function (MockInterface $mock) {
+        $this->mock(GoogleOAuthApiClient::class, function (MockInterface $mock) {
+            // * Commented out because we are using the singleton instance of the Client class
+            /* $mock->shouldReceive('setClientId')->once();   
             $mock->shouldReceive('setClientSecret')->once();   
-            $mock->shouldReceive('setRedirectUri')->once();   
-            $mock->shouldReceive('setScopes')->once();   
+            $mock->shouldReceive('setRedirectUri')->once();  */  
             $mock->shouldReceive('fetchAccessTokenWithAuthCode')
             ->andReturn(['access_token' => 'fake-token']);   
         });
@@ -45,10 +52,11 @@ class ServicesTest extends TestCase
         $this->postJson('api/external-service/callback', [
             'code' => 'dummy-code',
         ])->assertCreated();
-
         $this->assertDatabaseHas('external_services', [
             'user_id' => $this->user->id,
             'name' => 'google-drive',
+            'token' => '{"access_token":"fake-token"}',
+            // 'token' => json_encode(['access_token' => 'fake-token']),
         ]);
 
         $this->assertNotNull($this->user->externalService->token);
