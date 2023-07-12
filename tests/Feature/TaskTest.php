@@ -73,6 +73,7 @@ class TaskTest extends TestCase
 
     public function testStoreTaskOfATodoListWhileFieldRequiredFilledByEmptyValue()
     {
+        $this->withExceptionHandling();
         $dataInput = Task::factory()->make(['title' => '', 'description' => 'New Description', 'status' => ''])->toArray();
         $response = $this->postJson("api/todo-list/{$this->task->todo_list_id}/task", $dataInput)
             ->assertUnprocessable()

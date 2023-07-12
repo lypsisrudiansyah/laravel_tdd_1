@@ -49,6 +49,7 @@ class TodoListTest extends TestCase
     // create test fetchSingleTodoListNotFound
     public function testFetchSingleTodoListNotFound()
     {
+        $this->withExceptionHandling();
         $response = $this->getJson("api/todo-list/999")
             ->assertNotFound();
     }
@@ -68,7 +69,8 @@ class TodoListTest extends TestCase
 
     public function testWhileStoringTodoListNameAndUserIdIsRequired()
     {
-        // ? why its not working while using $this->withoutExceptionHandling();
+        // ? why its not working while using $this->withoutExceptionHandling(); , answer: now i understand why thats not working, its about using not exception handling
+        $this->withExceptionHandling();
         $dataInput = ['name' => '', 'user_id' => null];
 
         $this->postJson("api/todo-list", $dataInput)
@@ -96,6 +98,7 @@ class TodoListTest extends TestCase
 
     public function testWhileUpdateTodoListNameIsRequired()
     {
+        $this->withExceptionHandling();
         $dataInput = ['name' => '', 'user_id' => null];
 
         $this->patchJson("api/todo-list/{$this->list->id}", $dataInput)
