@@ -32,12 +32,13 @@ class ExternalServiceController extends Controller
         
         $accessToken = $client->fetchAccessTokenWithAuthCode($request->code);
         Log::info('accessToken : ' . json_encode($accessToken));
-        ExternalService::create([
+        $service = ExternalService::create([
             'user_id' => auth()->user()->id,
             'name' => 'google-drive',
+            // 'token' => $accessToken,
             'token' => json_encode($accessToken),
         ]);
-        return $accessToken;
+        return $service;
    
     }
 
@@ -48,7 +49,8 @@ class ExternalServiceController extends Controller
 
     private function customGoogleApiClientHandler(): Client
     {
-        $client = new Client();
+        // $client = new Client();
+        $client = app(Client::class);
         // $client->setAuthConfig(storage_path('app/credentials.json'));
         $config = config('services.google_drive');
         $client->setClientId($config['client_id']);

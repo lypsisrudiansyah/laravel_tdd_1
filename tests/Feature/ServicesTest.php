@@ -2,8 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\ExternalService;
+use Google\Client;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Mockery\MockInterface;
 use Tests\TestCase;
 
 class ServicesTest extends TestCase
@@ -30,14 +33,25 @@ class ServicesTest extends TestCase
 
     public function testServiceCallbackWillStoreToken()
     {
+        $this->mock(Client::class, function (MockInterface $mock) {
+            $mock->shouldReceive('setClientId')->once();   
+            $mock->shouldReceive('setClientSecret')->once();   
+            $mock->shouldReceive('setRedirectUri')->once();   
+            $mock->shouldReceive('setScopes')->once();   
+            $mock->shouldReceive('fetchAccessTokenWithAuthCode')
+            ->andReturn(['access_token' => 'fake-token']);   
+        });
+        
         $this->postJson('api/external-service/callback', [
             'code' => 'dummy-code',
-        ])->assertOk();
+        ])->assertCreated();
 
         $this->assertDatabaseHas('external_services', [
             'user_id' => $this->user->id,
             'name' => 'google-drive',
         ]);
+
+        $this->assertNotNull($this->user->externalService->token);
     }
 }
  

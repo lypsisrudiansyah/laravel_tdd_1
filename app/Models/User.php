@@ -51,4 +51,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Label::class);
     }
+
+    public function externalService()
+    {
+        return $this->hasOne(ExternalService::class);
+    }
 }

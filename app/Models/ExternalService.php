@@ -14,4 +14,9 @@ class ExternalService extends Model
         'name',
         'token',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
