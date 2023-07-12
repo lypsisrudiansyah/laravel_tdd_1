@@ -41,6 +41,7 @@ class LabelTest extends TestCase
     
     public function testUserOnCreateLabelButFieldRequiredFilledByEmptyValue()
     {
+        $this->withExceptionHandling();
         $labelInput = Label::factory()->raw([
             'color' => null,
         ]);

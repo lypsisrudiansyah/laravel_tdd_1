@@ -113,6 +113,7 @@ class TaskTest extends TestCase
 
     public function testFetchSingleTaskNotFound()
     {
+        $this->withExceptionHandling();
         $user = User::factory()->create();
 
         $response = $this->getJson("api/task/999")
