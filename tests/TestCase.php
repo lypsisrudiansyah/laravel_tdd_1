@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\ExternalService;
 use App\Models\Label;
 use App\Models\Task;
 use App\Models\TodoList;
@@ -43,6 +44,11 @@ abstract class TestCase extends BaseTestCase
     public function createLabel(array $args = [])
     {
         return Label::factory()->create($args ?? null);
+    }
+
+    public function createExternalService(array $args = [])
+    {
+        return ExternalService::factory()->create($args ?? null);
     }
 
     public function authUser()

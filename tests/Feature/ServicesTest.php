@@ -31,6 +31,7 @@ class ServicesTest extends TestCase
         $response = $this->getJson('api/external-service/connect/google-drive')
         ->assertOk();
 
+        $this->assertEquals('http://localhost', $response['auth_url']);
         $response->assertJsonStructure([
             'auth_url'
         ]);
@@ -45,21 +46,41 @@ class ServicesTest extends TestCase
             /* $mock->shouldReceive('setClientId')->once();   
             $mock->shouldReceive('setClientSecret')->once();   
             $mock->shouldReceive('setRedirectUri')->once();  */  
+            
             $mock->shouldReceive('fetchAccessTokenWithAuthCode')
             ->andReturn(['access_token' => 'fake-token']);   
         });
         
-        $this->postJson('api/external-service/callback', [
+        $res = $this->postJson('api/external-service/callback', [
             'code' => 'dummy-code',
         ])->assertCreated();
+
+        // dd($res);
+        
         $this->assertDatabaseHas('external_services', [
             'user_id' => $this->user->id,
             'name' => 'google-drive',
-            'token' => '{"access_token":"fake-token"}',
+            'token' => '"{\"access_token\":\"fake-token\"}"',
             // 'token' => json_encode(['access_token' => 'fake-token']),
         ]);
 
         $this->assertNotNull($this->user->externalService->token);
+    }
+
+    public function testDataOfWeekCanBeStoreStored()
+    {
+        $this->mock(GoogleOAuthApiClient::class, function (MockInterface $mock) {
+            // * Commented out because we are using the singleton instance of the Client class
+            /* $mock->shouldReceive('setClientId')->once();   
+            $mock->shouldReceive('setClientSecret')->once();   
+            $mock->shouldReceive('setRedirectUri')->once();  */  
+            
+            $mock->shouldReceive('setAccessToken');
+        });
+
+        
+        $externalService = $this->createExternalService();
+        $this->postJson("api/external-service/store-data/$externalService->id")->assertCreated();
     }
 }
  
