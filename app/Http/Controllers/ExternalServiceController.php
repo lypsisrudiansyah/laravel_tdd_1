@@ -6,7 +6,10 @@ use App\Models\ExternalService;
 use Google\Client;
 use Illuminate\Http\Request;
 use App\CustomServices\GoogleOAuthApiClient;
+use Google\Service\Drive;
+use Google\Service\Drive\DriveFile;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
 
 class ExternalServiceController extends Controller
 {
@@ -41,6 +44,39 @@ class ExternalServiceController extends Controller
             'token' => json_encode($accessToken),
         ]);
         return $service;
+    }
+
+    public function storeData(Request $request, ExternalService $service, Client $client)
+    {
+        // dd($service);
+        $accessToken = $service->token['access_token'];
+        $client->setAccessToken($accessToken);
+
+        $service = new Drive($client);
+        $file = new DriveFile();
+
+        DEFINE("TESTFILE", 'testfile-small.txt');
+        if (!file_exists(TESTFILE)) {
+            $fh = fopen(TESTFILE, 'w');
+            fseek($fh, 1024 * 1024);
+            fwrite($fh, "!", 1);
+            fclose($fh);
+        }
+
+        $file->setName("rudis_file");
+        $result2 = $service->files->create(
+            $file,
+            [
+                'data' => file_get_contents(TESTFILE),
+                'mimeType' => 'application/octet-stream',
+                'uploadType' => 'multipart'
+            ]
+        );
+
+        // $service->storeData($request->all());
+        return response()->json([
+            'message' => 'Uploaded'
+        ])->setStatusCode(Response::HTTP_CREATED);
     }
 
     private const GDRIVE_SCOPES = [

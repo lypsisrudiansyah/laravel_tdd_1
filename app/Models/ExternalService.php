@@ -15,6 +15,11 @@ class ExternalService extends Model
         'token',
     ];
 
+    // create castings for token as json/array
+    protected $casts = [
+        'token' => 'json'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
