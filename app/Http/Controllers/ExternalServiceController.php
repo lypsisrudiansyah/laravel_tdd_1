@@ -46,14 +46,16 @@ class ExternalServiceController extends Controller
         return $service;
     }
 
-    public function storeData(Request $request, ExternalService $service, Client $client)
+    public function storeData(ExternalService $service, GoogleOAuthApiClient $client)
     {
-        // dd($service);
+        // dd($service->token['access_token']);
         $accessToken = $service->token['access_token'];
         $client->setAccessToken($accessToken);
 
         $service = new Drive($client);
         $file = new DriveFile();
+
+        $fileToUpload = '';
 
         DEFINE("TESTFILE", 'testfile-small.txt');
         if (!file_exists(TESTFILE)) {
@@ -62,7 +64,7 @@ class ExternalServiceController extends Controller
             fwrite($fh, "!", 1);
             fclose($fh);
         }
-
+        
         $file->setName("rudis_file");
         $result2 = $service->files->create(
             $file,

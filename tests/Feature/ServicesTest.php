@@ -76,6 +76,7 @@ class ServicesTest extends TestCase
             $mock->shouldReceive('setRedirectUri')->once();  */  
             
             $mock->shouldReceive('setAccessToken');
+            $mock->shouldReceive('getLogger');
         });
 
         
