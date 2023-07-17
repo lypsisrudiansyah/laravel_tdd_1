@@ -10,6 +10,7 @@ use App\Models\Task;
 use Google\Service\Drive;
 use Google\Service\Drive\DriveFile;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 class ExternalServiceController extends Controller
@@ -49,9 +50,16 @@ class ExternalServiceController extends Controller
 
     public function storeDataForBackup(ExternalService $service, GoogleOAuthApiClient $client)
     {
-        // dd($service->token['access_token']);
+        // * Backup data Proccess
+        $authUser = auth()->user();
         $tasks = Task::where('created_at', '>=', now()->subDays(7))->get();
-        
+        $jsonTasks = json_encode($tasks, JSON_PRETTY_PRINT);
+
+        $jsonFileName = 'task_dump.json';
+
+        Storage::put("/public/$authUser->id/$jsonFileName", $jsonTasks);
+
+        // * Service Proccess
         $accessToken = $service->token['access_token'];
         $client->setAccessToken($accessToken);
 
