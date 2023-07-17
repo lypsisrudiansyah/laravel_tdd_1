@@ -6,6 +6,7 @@ use App\Models\ExternalService;
 use Google\Client;
 use Illuminate\Http\Request;
 use App\CustomServices\GoogleOAuthApiClient;
+use App\Models\Task;
 use Google\Service\Drive;
 use Google\Service\Drive\DriveFile;
 use Illuminate\Support\Facades\Log;
@@ -46,9 +47,11 @@ class ExternalServiceController extends Controller
         return $service;
     }
 
-    public function storeData(ExternalService $service, GoogleOAuthApiClient $client)
+    public function storeDataForBackup(ExternalService $service, GoogleOAuthApiClient $client)
     {
         // dd($service->token['access_token']);
+        $tasks = Task::where('created_at', '>=', now()->subDays(7))->get();
+        
         $accessToken = $service->token['access_token'];
         $client->setAccessToken($accessToken);
 

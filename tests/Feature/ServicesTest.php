@@ -69,6 +69,10 @@ class ServicesTest extends TestCase
 
     public function testDataOfWeekCanBeStoreStored()
     {
+        $this->createTask(['created_at' => now()->subDays(2)]);
+        $this->createTask(['created_at' => now()->subDays(3)]);
+        $this->createTask(['created_at' => now()->subDays(4)]);
+        
         $this->mock(GoogleOAuthApiClient::class, function (MockInterface $mock) {
             // * Commented out because we are using the singleton instance of the Client class
             /* $mock->shouldReceive('setClientId')->once();   
@@ -76,7 +80,9 @@ class ServicesTest extends TestCase
             $mock->shouldReceive('setRedirectUri')->once();  */  
             
             $mock->shouldReceive('setAccessToken');
-            $mock->shouldReceive('getLogger');
+            $mock->shouldReceive('getLogger->info');
+            $mock->shouldReceive('shouldDefer');
+            $mock->shouldReceive('execute');
         });
 
         
