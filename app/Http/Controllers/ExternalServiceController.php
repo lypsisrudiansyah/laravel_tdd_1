@@ -12,6 +12,7 @@ use Google\Service\Drive\DriveFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
+use ZipArchive;
 
 class ExternalServiceController extends Controller
 {
@@ -55,11 +56,30 @@ class ExternalServiceController extends Controller
         $tasks = Task::where('created_at', '>=', now()->subDays(7))->get();
         $jsonTasks = json_encode($tasks, JSON_PRETTY_PRINT);
 
-        $jsonFileName = 'task_dump.json';
+        $jsonFileName = 'task_dump1.json';
+        $dirSeparator = '/';
+        $directoryFile = 'public' . $dirSeparator . $authUser->id . $dirSeparator;
+        $directoryFileAndName = $directoryFile . $jsonFileName;
+        // dd($directoryFileAndName);
+        Storage::put("$directoryFileAndName", $jsonTasks);
 
-        Storage::put("/public/$authUser->id/$jsonFileName", $jsonTasks);
+        $zip = new ZipArchive();
+        $zipFileName = storage_path('app' . $dirSeparator . $directoryFile . now()->timestamp . '-task.zip' );
+        // dd($zipFileName);
 
-        // * Service Proccess
+        if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
+            $zipFile = storage_path('app' . $dirSeparator . $directoryFileAndName);
+            // dd($zipFile);
+            $zip->addFile($zipFile);
+        }else {
+            Log::info('Failed to open ZIP file: ' . $zipFileName);
+            Log::error('Error code: ' . $zip->status);        
+        }
+
+        $zip->close();
+
+
+        // * External Service Proccess
         $accessToken = $service->token['access_token'];
         $client->setAccessToken($accessToken);
 
