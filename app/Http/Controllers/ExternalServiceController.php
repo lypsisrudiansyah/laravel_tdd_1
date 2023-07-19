@@ -85,22 +85,12 @@ class ExternalServiceController extends Controller
 
         $service = new Drive($client);
         $file = new DriveFile();
-
-        $fileToUpload = '';
-
-        DEFINE("TESTFILE", 'testfile-small.txt');
-        if (!file_exists(TESTFILE)) {
-            $fh = fopen(TESTFILE, 'w');
-            fseek($fh, 1024 * 1024);
-            fwrite($fh, "!", 1);
-            fclose($fh);
-        }
         
         $file->setName("rudis_file");
-        $result2 = $service->files->create(
+        $service->files->create(
             $file,
             [
-                'data' => file_get_contents(TESTFILE),
+                'data' => file_get_contents($zipFileName),
                 'mimeType' => 'application/octet-stream',
                 'uploadType' => 'multipart'
             ]
