@@ -89,7 +89,7 @@ class ServicesTest extends TestCase
 
         
         $externalService = $this->createExternalService();
-        $this->postJson("api/external-service/store-data/$externalService->id")->assertCreated();
+        $this->postJson("api/external-service/store-data/$externalService->id")->assertOk();
     }
 }
  
