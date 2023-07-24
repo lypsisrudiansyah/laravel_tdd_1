@@ -23,9 +23,9 @@ class ExternalServiceController extends Controller
             // $client = self::customGoogleApiClientHandler();
 
             $client->setScopes(self::GDRIVE_SCOPES);
+            // $client->setAccessType('offline');
             $url = $client->createAuthUrl();
 
-            // return $url;
             return response()->json([
                 'auth_url' => $url
             ])->setStatusCode(200);
@@ -42,13 +42,14 @@ class ExternalServiceController extends Controller
 
         $accessToken = $client->fetchAccessTokenWithAuthCode($request->code);
         // dd($accessToken['access_token']);
-        // dd($accessToken);
 
         if (array_key_exists('error', $accessToken)) {
             return response()->json([
                 'message' => "Failed to get access token",
             ], 500);
         }
+
+
         Log::info('accessToken : ' . json_encode($accessToken));
         $service = ExternalService::create([
             'user_id' => auth()->user()->id,
