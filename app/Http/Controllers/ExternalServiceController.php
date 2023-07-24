@@ -99,7 +99,7 @@ class ExternalServiceController extends Controller
         // $service->storeData($request->all());
         return response()->json([
             'message' => 'Uploaded'
-        ])->setStatusCode(Response::HTTP_CREATED);
+        ])->setStatusCode(Response::HTTP_OK);
     }
 
     private const GDRIVE_SCOPES = [

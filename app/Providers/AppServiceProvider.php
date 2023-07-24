@@ -16,7 +16,8 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(GoogleOAuthApiClient::class, function () {
-            $client = app(GoogleOAuthApiClient::class);
+            // $client = app(GoogleOAuthApiClient::class);
+            $client = new GoogleOAuthApiClient();
             
             $config = config('services.google_drive');
             $client->setClientId($config['client_id']);
