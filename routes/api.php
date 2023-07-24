@@ -35,10 +35,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('label', LabelController::class);
 
     Route::get('external-service/connect/{serviceName}', [ExternalServiceController::class, 'connectService']);
-    Route::post('external-service/callback', [ExternalServiceController::class, 'callback']);
     Route::post('external-service/store-data/{service}', [ExternalServiceController::class, 'storeDataForBackup']);
 });
 
+Route::get('external-service/callback', [ExternalServiceController::class, 'callback']);
 
 Route::post('auth/register', [RegisterController::class, 'register'])->name('auth.register');
 Route::post('auth/login', [LoginController::class, 'login'])->name('auth.login');

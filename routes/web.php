@@ -34,7 +34,7 @@ Route::get('/', function () {
     return $client;
 } */
 
-Route::get('/drive', function () {
+/* Route::get('/drive', function () {
     $client = googleApiClientHandler();
 
     // $service = new Google\Service\Drive($client);
@@ -61,3 +61,4 @@ Route::get('google-drive/callback', function () {
     // return $accessToken[];
     echo "Succeded Upload File :), this access expires in : " . $accessToken['expires_in'];
 });
+ */

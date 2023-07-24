@@ -34,12 +34,21 @@ class ExternalServiceController extends Controller
 
     public function callback(Request $request, GoogleOAuthApiClient $client)
     {
+        Log::info('on callback : ' . $request);
         // * when still using helpers function to shortern handling google oauth api client - but now we handling it on singleton instance
         // $client = self::customGoogleApiClientHandler();
 
         Log::info('on fetch access token');
 
         $accessToken = $client->fetchAccessTokenWithAuthCode($request->code);
+        // dd($accessToken['access_token']);
+        // dd($accessToken);
+
+        if (array_key_exists('error', $accessToken)) {
+            return response()->json([
+                'message' => "Failed to get access token",
+            ], 500);
+        }
         Log::info('accessToken : ' . json_encode($accessToken));
         $service = ExternalService::create([
             'user_id' => auth()->user()->id,
@@ -83,11 +92,11 @@ class ExternalServiceController extends Controller
         $accessToken = $service->token['access_token'];
         $client->setAccessToken($accessToken);
 
-        $service = new Drive($client);
+        $driveService = new Drive($client);
         $file = new DriveFile();
         
-        $file->setName("rudis_file");
-        $service->files->create(
+        // $file->setName("rudis_file");
+        $driveService->files->create(
             $file,
             [
                 'data' => file_get_contents($zipFileName),
