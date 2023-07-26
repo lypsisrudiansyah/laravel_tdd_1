@@ -34,29 +34,26 @@ class ExternalServiceController extends Controller
 
     public function callback(Request $request, GoogleOAuthApiClient $client)
     {
-        Log::info('on callback : ' . $request);
-        // * when still using helpers function to shortern handling google oauth api client - but now we handling it on singleton instance
-        // $client = self::customGoogleApiClientHandler();
+        try {
+            $accessToken = $client->fetchAccessTokenWithAuthCode($request->code);
+            // dd($accessToken['access_token']);
 
-        Log::info('on fetch access token');
+            if (array_key_exists('error', $accessToken)) {
+                return response()->json([
+                    'message' => "Failed to get access token",
+                ], 500);
+            }
 
-        $accessToken = $client->fetchAccessTokenWithAuthCode($request->code);
-        // dd($accessToken['access_token']);
-
-        if (array_key_exists('error', $accessToken)) {
-            return response()->json([
-                'message' => "Failed to get access token",
-            ], 500);
+            Log::info('accessToken : ' . json_encode($accessToken));
+            $service = ExternalService::create([
+                'user_id' => auth()->user()->id,
+                'name' => 'google-drive',
+                'token' => json_encode($accessToken),
+            ]);
+            return $service;
+        } catch (\Throwable $th) {
+            throw $th;
         }
-
-
-        Log::info('accessToken : ' . json_encode($accessToken));
-        $service = ExternalService::create([
-            'user_id' => auth()->user()->id,
-            'name' => 'google-drive',
-            'token' => json_encode($accessToken),
-        ]);
-        return $service;
     }
 
     public function storeDataForBackup(ExternalService $service, GoogleOAuthApiClient $client)
@@ -74,28 +71,29 @@ class ExternalServiceController extends Controller
         Storage::put("$directoryFileAndName", $jsonTasks);
 
         $zip = new ZipArchive();
-        $zipFileName = storage_path('app' . $dirSeparator . $directoryFile . now()->timestamp . '-task.zip' );
+        $zipFileName = storage_path('app' . $dirSeparator . $directoryFile . now()->timestamp . '-task.zip');
         // dd($zipFileName);
 
         if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
             $zipFile = storage_path('app' . $dirSeparator . $directoryFileAndName);
             // dd($zipFile);
             $zip->addFile($zipFile);
-        }else {
+        } else {
             Log::info('Failed to open ZIP file: ' . $zipFileName);
-            Log::error('Error code: ' . $zip->status);        
+            Log::error('Error code: ' . $zip->status);
         }
 
         $zip->close();
 
 
         // * External Service Proccess
-        $accessToken = $service->token['access_token'];
+        $accessTokenDecoded = json_decode($service->token, true);
+        $accessToken = $accessTokenDecoded['access_token'];
         $client->setAccessToken($accessToken);
 
         $driveService = new Drive($client);
         $file = new DriveFile();
-        
+
         // $file->setName("rudis_file");
         $driveService->files->create(
             $file,

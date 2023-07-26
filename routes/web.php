@@ -48,6 +48,7 @@ Route::get('/', function () {
 
  */
 Route::get('google-drive/callback', function () {
+    Log::info(request());
     if (request('state') == env('CODE_FOR_CALLBACK')) {
         return response()->json([
             'code' => request('code'),
