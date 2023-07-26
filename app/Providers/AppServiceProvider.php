@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
             $client->setClientId($config['client_id']);
             $client->setClientSecret($config['client_secret']);
             $client->setRedirectUri($config['redirect_url']);
+            $client->setState($config['code_for_callback']);
         
             return $client;
         });

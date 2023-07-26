@@ -35,6 +35,7 @@ return [
         'client_id' => env('GOOGLE_OAUTH_CLIENT_ID'),
         'client_secret' => env('GOOGLE_OAUTH_CLIENT_SECRET'),
         'redirect_url' => env('GOOGLE_OAUTH_CALLBACK_REDIRECT'),
+        'code_for_callback' => env('CODE_FOR_CALLBACK'),
     ],
 
 ];
