@@ -45,20 +45,17 @@ Route::get('/', function () {
     return $url;
 });
 
-Route::get('google-drive/callback', function () {
-    $client = googleApiClientHandler();
 
-    Log::info('on fetch access token');
-
-    // $code = request('code');
-    $code = $_GET['code'];
-    Log::info('code: ' . $code);
-    $accessToken = $client->fetchAccessTokenWithAuthCode($code);
-    Log::info('accessToken : ' . json_encode($accessToken));
-
-    uploadToGoogleDrive($accessToken['access_token']);
-    
-    // return $accessToken[];
-    echo "Succeded Upload File :), this access expires in : " . $accessToken['expires_in'];
-});
  */
+Route::get('google-drive/callback', function () {
+    if (request('state') == env('CODE_FOR_CALLBACK')) {
+        return response()->json([
+            'code' => request('code'),
+            'status' => 'confirmed',
+        ], 200);
+    } else {
+        return response()->json([
+            'status' => 'unknown response, unauthorized',
+        ], 400);
+    }
+});
