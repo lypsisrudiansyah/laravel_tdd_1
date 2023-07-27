@@ -18,6 +18,7 @@ class ExternalServiceFactory extends Factory
     {
         return [
             'name' => 'google-drive',
+            // 'token' => json_encode(['access_token' => 'fake-token']),
             'token' => ['access_token' => 'fake-token'],
             'user_id' => function() {
                 return \App\Models\User::factory()->create()->id;
