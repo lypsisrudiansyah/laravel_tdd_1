@@ -77,7 +77,7 @@ class ExternalServiceController extends Controller
         if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
             $zipFile = storage_path('app' . $dirSeparator . $directoryFileAndName);
             // dd($zipFile);
-            $zip->addFile($zipFile);
+            $zip->addFile($zipFile, $jsonFileName);
         } else {
             Log::info('Failed to open ZIP file: ' . $zipFileName);
             Log::error('Error code: ' . $zip->status);
@@ -93,6 +93,7 @@ class ExternalServiceController extends Controller
 
         $driveService = new Drive($client);
         $file = new DriveFile();
+        $file->setName('backup_task.zip');
 
         // $file->setName("rudis_file");
         $driveService->files->create(
