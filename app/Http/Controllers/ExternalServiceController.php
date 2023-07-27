@@ -16,6 +16,11 @@ use ZipArchive;
 
 class ExternalServiceController extends Controller
 {
+    private const GDRIVE_SCOPES = [
+        'https://www.googleapis.com/auth/drive',
+        'https://www.googleapis.com/auth/drive.file'
+    ];
+    
     public function connectService($serviceName, GoogleOAuthApiClient $client)
     {
         if ($serviceName === 'google-drive') {
@@ -48,7 +53,8 @@ class ExternalServiceController extends Controller
             $service = ExternalService::create([
                 'user_id' => auth()->user()->id,
                 'name' => 'google-drive',
-                'token' => json_encode($accessToken),
+                // 'token' => json_encode($accessToken),
+                'token' => $accessToken,
             ]);
             return $service;
         } catch (\Throwable $th) {
@@ -87,7 +93,9 @@ class ExternalServiceController extends Controller
 
 
         // * External Service Proccess
-        $accessTokenDecoded = json_decode($service->token, true);
+            // * when saved as jsonEncoded using this way
+            // $accessTokenDecoded = json_decode($service->token, true);
+        $accessTokenDecoded = $service->token;
         $accessToken = $accessTokenDecoded['access_token'];
         $client->setAccessToken($accessToken);
 
@@ -111,11 +119,7 @@ class ExternalServiceController extends Controller
         ])->setStatusCode(Response::HTTP_OK);
     }
 
-    private const GDRIVE_SCOPES = [
-        'https://www.googleapis.com/auth/drive',
-        'https://www.googleapis.com/auth/drive.file'
-    ];
-
+    // * for manual handling google oauth api client using helper function - but now we handling it on singleton instance
     private function customGoogleApiClientHandler(): Client
     {
         $client = app(Client::class);

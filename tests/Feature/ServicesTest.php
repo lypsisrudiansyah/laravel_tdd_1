@@ -60,8 +60,8 @@ class ServicesTest extends TestCase
         $this->assertDatabaseHas('external_services', [
             'user_id' => $this->user->id,
             'name' => 'google-drive',
-            'token' => '"{\"access_token\":\"fake-token\"}"',
-            // 'token' => json_encode(['access_token' => 'fake-token']),
+            // 'token' => ['access_token' => 'fake-token'],
+            'token' => json_encode(['access_token' => 'fake-token']),
         ]);
 
         $this->assertNotNull($this->user->externalService->token);
