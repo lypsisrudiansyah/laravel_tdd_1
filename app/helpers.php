@@ -21,7 +21,7 @@ function googleApiClientHandler() : Client
     // $client->setAuthConfig(storage_path('app/credentials.json'));
     $client->setClientId(env('GOOGLE_OAUTH_CLIENT_ID'));
     $client->setClientSecret(env('GOOGLE_OAUTH_CLIENT_SECRET'));
-    $client->setState(env('CODE_FOR_CALLBACK')));
+    $client->setState(env('CODE_FOR_CALLBACK'));
     $client->setRedirectUri('http://localhost:8000/google-drive/callback');
     $client->setScopes([
         'https://www.googleapis.com/auth/drive',
