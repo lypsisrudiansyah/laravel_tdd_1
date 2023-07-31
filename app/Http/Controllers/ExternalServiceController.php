@@ -113,6 +113,8 @@ class ExternalServiceController extends Controller
             ]
         );
 
+        
+
         // $service->storeData($request->all());
         return response()->json([
             'message' => 'Uploaded'

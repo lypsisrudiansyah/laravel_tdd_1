@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LabelRequest;
+use App\Http\Resources\LabelResource;
 use App\Models\Label;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,7 @@ class LabelController extends Controller
         $labels = auth()->user()->labels;
 
         return response()->json($labels)->setStatusCode(200);
+        // return LabelResource::collection($labels);
     }
     
     public function store(LabelRequest $request)
