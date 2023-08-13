@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskRequest;
+use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Models\TodoList;
 use Illuminate\Http\Request;
@@ -24,8 +25,8 @@ class TaskController extends Controller
         // dd($data);
         $task = $todoList->tasks()->create($request->validated());
         // $data['todo_list_id'] = $todoList->id;
-        // $task = Task::create($data);
-        return response()->json($task)->setStatusCode(201);
+        // return response()->json($task)->setStatusCode(201);
+        return new TaskResource($task);
     }
 
     public function update(Request $request, Task $task)
