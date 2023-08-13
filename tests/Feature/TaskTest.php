@@ -43,11 +43,12 @@ class TaskTest extends TestCase
         $label = $this->createLabel();
         $dataInput = $this->createTask(['todo_list_id' => $this->task->todo_list_id, 'label_id' => $label->id])->toArray();
         $dataInput['label_id'] = $label->id;
+        $dataInputResp = $this->dataResponseResource($dataInput);
         // $dataInput = $this->task->toArray();
         // $response = $this->postJson("api/todo-list/{$this->task->todo_list_id}/task", $dataInput);
-        $this->postJson("api/todo-list/{$this->task->todo_list_id}/task", $dataInput)
-            ->assertCreated()->assertJsonStructure(array_keys($dataInput));
-
+        $resp = $this->postJson("api/todo-list/{$this->task->todo_list_id}/task", $dataInput)
+            ->assertCreated()->assertJsonStructure(array_keys($dataInputResp));
+// dd($resp->json());
         $this->assertDatabaseHas('tasks', [
             'title' => $dataInput['title'],
             'status' => $dataInput['status'],
@@ -61,8 +62,10 @@ class TaskTest extends TestCase
         $label = $this->createLabel();
         $dataInput = $this->createTask(['todo_list_id' => $this->task->todo_list_id, 'label_id' => $label->id])->toArray();
         $dataInput['label_id'] = null;
+        $dataInputResp = $this->dataResponseResource($dataInput);
+
         $this->postJson("api/todo-list/{$this->task->todo_list_id}/task", $dataInput)
-            ->assertCreated()->assertJsonStructure(array_keys($dataInput));
+            ->assertCreated()->assertJsonStructure(array_keys($dataInputResp));
 
         $this->assertDatabaseHas('tasks', [
             'title' => $dataInput['title'],

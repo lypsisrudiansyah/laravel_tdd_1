@@ -57,5 +57,9 @@ abstract class TestCase extends BaseTestCase
         Sanctum::actingAs($user);
         return $user;
     }
+
+    function dataResponseResource($dataInput) {
+        return ['data' => $dataInput];
+    }
     
 }
