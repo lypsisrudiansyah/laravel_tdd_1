@@ -28,13 +28,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('todo-list', TodoListController::class);
-    
+
     Route::get('task/{task}', [TaskController::class, 'show'])->name('task.show');
     Route::apiResource('todo-list.task', TaskController::class)->except('show')->shallow();
 
     Route::apiResource('label', LabelController::class);
 
     Route::post('external-service/callback', [ExternalServiceController::class, 'callback']);
+    // Route::get('external-service/callback', [ExternalServiceController::class, 'callback']);
+
     Route::get('external-service/connect/{serviceName}', [ExternalServiceController::class, 'connectService']);
     Route::post('external-service/store-data/{service}', [ExternalServiceController::class, 'storeDataForBackup']);
 });

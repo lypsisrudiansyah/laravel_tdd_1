@@ -15,8 +15,8 @@ class TaskController extends Controller
     {
         $tasks = $todoList->tasks;
         // $tasks = Task::where('todo_list_id', $todoList->id)->get();
-        // dd($tasks);
-        return response()->json($tasks)->setStatusCode(200);
+        // return response()->json($tasks)->setStatusCode(200);
+        return TaskResource::collection($tasks);
     }
 
     public function store(TaskRequest $request, TodoList $todoList)
