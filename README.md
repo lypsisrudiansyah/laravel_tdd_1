@@ -31,6 +31,8 @@ or
 `vendor/bin/phpunit`
 
 ![image](https://github.com/lypsisrudiansyah/laravel_tdd_1/assets/52348378/32d03105-17a2-4dc9-b77c-acb7eb80f057)
+![vendor phpunit2](https://github.com/user-attachments/assets/83e6e39e-08a2-417b-ac55-5c18dde6164d)
+
 
 ### Testing on VsCode
 ![image](https://github.com/lypsisrudiansyah/laravel_tdd_1/assets/52348378/860195e7-5ad1-4687-b847-d426148cc847)
