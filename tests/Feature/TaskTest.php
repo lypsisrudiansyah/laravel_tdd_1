@@ -29,10 +29,13 @@ class TaskTest extends TestCase
         $task = $this->createTask(['todo_list_id' => $todoList->id]);
         $response = $this->getJson("api/todo-list/{$todoList->id}/task")
             ->assertOk();
+        // dd($response->getContent());
 
         $this->assertEquals(1, count($response->json()));
         $response->assertJsonStructure([
-            '*' => ['id', 'title', 'description', 'status']
+            'data' => [
+                '*' => ['id', 'title', 'description', 'status']
+            ]
         ]);
     }
 
